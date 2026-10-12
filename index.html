@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>طلبات الدعم | نادي الذكاء الاصطناعي</title>
+<title>مراجعة أعمال الأعضاء | نادي الذكاء الاصطناعي</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Readex+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -229,6 +229,58 @@
   footer b { color: var(--text); font-weight: 600; }
   .preview-badge { position: fixed; bottom: 12px; left: 12px; z-index: 5; font-size: 12px; padding: 6px 10px; border-radius: 8px; background: #2a1d00; color: #ffcf66; border: 1px solid #5c4300; display: none; }
   .hidden { display: none !important; }
+
+  /* ─── المراجعة ─── */
+  .card.login { max-width: 460px; margin: 24px auto 0; min-height: 0; }
+  .login .field input { direction: ltr; text-align: center; font-size: 18px; letter-spacing: 2px; }
+  .login .btn { width: 100%; }
+  .whoami { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap;
+    margin: 22px 0 14px; padding: 10px 16px; border-radius: 14px; background: var(--surface-2); border: 1px solid var(--border); font-size: 14px; }
+  .whoami b { font-weight: 600; }
+  .whoami .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--green); margin-left: 8px; }
+  .linkbtn { font: inherit; font-size: 13px; color: var(--muted); background: none; border: 0; cursor: pointer; text-decoration: underline; }
+  .linkbtn:hover { color: var(--text); }
+  #list-tabs .tab { white-space: nowrap; }
+  @media (max-width: 400px) { #list-tabs .tab { padding: 9px 12px; font-size: 13px; } }
+  .tabs .count { display: inline-block; min-width: 20px; padding: 0 6px; margin-right: 6px; border-radius: 99px; font-size: 12px; background: var(--surface-3); color: var(--text); }
+  .tab.active .count { background: #000; color: #fff; }
+  .item { display: flex; justify-content: space-between; align-items: center; gap: 12px; width: 100%; text-align: right; font: inherit; color: var(--text);
+    padding: 14px 16px; margin-bottom: 10px; border-radius: 16px; background: var(--surface-2); border: 1px solid var(--border); cursor: pointer; transition: border-color .2s, background .2s; }
+  .item:hover { border-color: var(--border-strong); background: var(--surface-3); }
+  .item b { display: block; font-size: 15px; font-weight: 600; margin-bottom: 3px; }
+  .item .meta { font-size: 12.5px; color: var(--muted); line-height: 1.6; }
+  .item .go { flex: none; font-size: 13px; color: var(--green); font-weight: 600; }
+  .kind { display: inline-block; font-size: 11.5px; font-weight: 600; padding: 1px 9px; border-radius: 99px; margin-left: 6px; background: var(--purple-soft); color: #d7bcff; }
+  .kind.part { background: rgba(80,160,255,.15); color: #9fd0ff; }
+  .empty { text-align: center; color: var(--muted); padding: 34px 0 10px; }
+  .rv-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; flex-wrap: wrap; margin-bottom: 16px; }
+  .rv-head h2 { margin: 0; }
+  .rv-meta { font-size: 13px; color: var(--muted); margin-top: 4px; line-height: 1.7; }
+  .links a { display: inline-block; color: var(--green); font-size: 14px; font-weight: 600; margin: 4px 0 0 14px; padding: 6px 12px; border-radius: 10px; background: var(--green-soft); text-decoration: none; }
+  .links a:hover { text-decoration: underline; }
+  .section-t { font-size: 15px; font-weight: 600; margin: 22px 0 10px; display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .field select { width: 100%; font: inherit; font-size: 15px; color: var(--text); background: var(--surface-2); border: 1px solid var(--border); border-radius: 12px; padding: 12px 14px; color-scheme: dark; }
+  .mrev { padding: 14px 16px; margin-bottom: 12px; border-radius: 16px; background: rgba(21,21,27,.7); border: 1px solid var(--border); }
+  .mrev.err { border-color: var(--danger); }
+  .mrev-top { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 10px; }
+  .mrev-top b { font-size: 15px; }
+  .mrev-top span.d { font-size: 12px; color: var(--muted); margin-right: 6px; }
+  .decide { display: flex; gap: 6px; margin-bottom: 10px; }
+  .decide button { flex: 1; font: inherit; font-size: 14px; padding: 10px; border-radius: 10px; cursor: pointer; color: var(--muted); background: var(--surface-2); border: 1px solid var(--border); }
+  .decide button.sel[data-v="approve"] { background: var(--green); color: #000; border-color: var(--green); font-weight: 600; }
+  .decide button.sel[data-v="reject"] { background: rgba(255,107,107,.18); color: #ffb3b3; border-color: rgba(255,107,107,.5); font-weight: 600; }
+  .mrev .field { margin-bottom: 10px; }
+  .mrev textarea { min-height: 70px !important; }
+  .star { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; cursor: pointer; user-select: none; margin-bottom: 10px; }
+  .star input { width: 18px; height: 18px; accent-color: #ffc94d; margin: 0; }
+  .locked { font-size: 13px; color: var(--muted); }
+  .rq { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; padding: 8px 12px; margin-bottom: 8px; border-radius: 12px; background: var(--surface-2); border: 1px solid var(--border); }
+  .rq span { font-size: 14px; }
+  .stars { display: flex; gap: 2px; }
+  .stars button { font: inherit; font-size: 24px; line-height: 1; padding: 2px 3px; background: none; border: 0; cursor: pointer; color: #3a3a48; }
+  .stars button.on { color: #ffc94d; }
+  .toast { position: fixed; bottom: 18px; left: 50%; transform: translateX(-50%); z-index: 9; padding: 10px 18px; border-radius: 12px; background: var(--green); color: #000; font-weight: 600; font-size: 14px; display: none; }
+  .toast.show { display: block; }
 </style>
 </head>
 <body>
@@ -246,479 +298,444 @@
   </header>
 
   <section class="hero">
-    <h1>بوابة <em>طلبات الدعم</em></h1>
-    <p>ارفع احتياج قسمك لفريق الدعم والتطوير، وتابع حالة طلبك أول بأول.</p>
+    <h1>مراجعة <em>أعمال الأعضاء</em></h1>
+    <p>اعتماد وتقييم المهام والمشاركات اللي سجّلها الأعضاء.</p>
   </section>
 
-  <div class="tabs" role="tablist">
-    <button class="tab active" data-view="new" role="tab">طلب جديد</button>
-    <button class="tab" data-view="track" role="tab">متابعة طلب</button>
-  </div>
-
-  <!-- ───── طلب جديد ───── -->
-  <main class="card" id="view-new">
-    <div class="stepper" id="stepper">
-      <div data-s="1"><div class="bar"></div><small>القسم</small></div>
-      <div data-s="2"><div class="bar"></div><small>نوع الطلب</small></div>
-      <div data-s="3"><div class="bar"></div><small>التفاصيل</small></div>
-    </div>
-
-    <section class="step show" data-step="1">
-      <h2>القسم</h2>
-      <div class="grid" id="dept-grid"></div>
-    </section>
-
-    <section class="step" data-step="2">
-      <h2>نوع الطلب</h2>
-      <div class="grid" id="type-grid"></div>
-      <div class="actions"><button class="btn btn-ghost" data-back="1">→ رجوع</button><span></span></div>
-    </section>
-
-    <section class="step" data-step="3">
-      <div class="chips">
-        <button class="chip" data-back="1"><i>القسم:</i> <span id="chip-dept"></span></button>
-        <button class="chip" data-back="2"><i>النوع:</i> <span id="chip-type"></span></button>
-      </div>
-      <form id="req-form" novalidate>
-        <div class="field" data-f="name">
-          <label for="f-name">الاسم</label>
-          <input id="f-name" name="name" autocomplete="name" maxlength="80">
-        </div>
-        <div class="field" data-f="title">
-          <label for="f-title" id="l-title">العنوان</label>
-          <input id="f-title" name="title" maxlength="150">
-        </div>
-        <div class="field" data-f="details">
-          <label for="f-details" id="l-details">التفاصيل</label>
-          <textarea id="f-details" name="details" maxlength="3000"></textarea>
-        </div>
-        <div class="field" data-f="priority">
-          <label>الأولوية</label>
-          <div class="seg" id="f-priority">
-            <button type="button" data-v="منخفضة">منخفضة</button>
-            <button type="button" data-v="متوسطة" class="sel">متوسطة</button>
-            <button type="button" data-v="عالية">عالية</button>
-            <button type="button" data-v="عاجلة">عاجلة 🔥</button>
-          </div>
-        </div>
-        <div class="row2">
-          <div class="field" data-f="deadline">
-            <label for="f-deadline">الموعد المطلوب <span class="opt-l">(اختياري)</span></label>
-            <input id="f-deadline" name="deadline" type="date">
-          </div>
-          <div class="field" data-f="link">
-            <label for="f-link">رابط مرفق <span class="opt-l">(اختياري)</span></label>
-            <input id="f-link" name="link" type="url" dir="ltr" maxlength="500">
-          </div>
-        </div>
-        <div class="alert" id="form-alert"></div>
-        <div class="actions">
-          <button type="button" class="btn btn-ghost" data-back="2">→ رجوع</button>
-          <button type="submit" class="btn btn-primary" id="submit-btn">إرسال الطلب</button>
-        </div>
-      </form>
-    </section>
-
-    <section class="step" data-step="4">
-      <div class="success">
-        <div class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
-        <h2>تم إرسال الطلب</h2>
-        <p>رقم الطلب للمتابعة</p>
-        <div class="ticket"><code id="ticket-id"></code><button class="copy" id="copy-btn" type="button">نسخ</button></div>
-        <div class="actions">
-          <button class="btn btn-ghost" id="track-this" type="button">متابعة الطلب</button>
-          <button class="btn btn-primary" id="new-req" type="button">طلب جديد</button>
-        </div>
-      </div>
-    </section>
+  <!-- تحميل -->
+  <main class="card login hidden" id="view-loading">
+    <div class="empty"><span class="spin" style="display:inline-block;vertical-align:middle;border-color:rgba(255,255,255,.2);border-top-color:var(--green);margin-left:8px"></span> جاري التحميل…</div>
   </main>
 
-  <!-- ───── المتابعة ───── -->
-  <main class="card hidden" id="view-track">
+  <!-- الدخول -->
+  <main class="card login hidden" id="view-login">
     <div class="step show">
-    <h2>حالة الطلب</h2>
-    <p class="sub">رقم الطلب</p>
-    <form class="track-form" id="track-form">
-      <div class="field"><input id="track-id" placeholder="SUP-7K" autocomplete="off" aria-label="رقم الطلب"></div>
-      <button class="btn btn-primary" type="submit" id="track-btn">تحقق</button>
-    </form>
-    <div class="recent hidden" id="recent"></div>
-    <div class="result" id="result"></div>
+      <h2>تسجيل الدخول</h2>
+      <p class="sub">رمز الدخول الخاص بالقسم</p>
+      <form id="login-form" novalidate>
+        <div class="field"><input id="f-code" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="رمز الدخول"></div>
+        <div class="alert" id="login-alert"></div>
+        <div class="actions"><button type="submit" class="btn btn-primary" id="login-btn">دخول</button></div>
+      </form>
     </div>
   </main>
+
+  <!-- القائمة والمراجعة -->
+  <div id="view-app" class="hidden">
+    <div class="whoami">
+      <div><span class="dot"></span><b id="who-dept"></b> <span id="who-extra" style="color:var(--muted)"></span></div>
+      <button class="linkbtn" id="logout" type="button">تسجيل خروج</button>
+    </div>
+
+    <div class="tabs" role="tablist" id="list-tabs">
+      <button class="tab active" data-list="pending" type="button">بانتظار المراجعة <span class="count" id="c-pending">0</span></button>
+      <button class="tab" data-list="done" type="button">تمت مراجعتها <span class="count" id="c-done">0</span></button>
+    </div>
+
+    <main class="card" id="view-list">
+      <div class="step show">
+        <div class="alert" id="list-alert"></div>
+        <div id="list"></div>
+      </div>
+    </main>
+
+    <main class="card hidden" id="view-review">
+      <div class="step show">
+        <div class="rv-head">
+          <div>
+            <h2 id="rv-title"></h2>
+            <div class="rv-meta" id="rv-meta"></div>
+          </div>
+          <button class="btn btn-ghost" id="rv-back" type="button">→ رجوع</button>
+        </div>
+        <form id="rv-form" novalidate>
+          <div id="rv-fields"></div>
+          <div class="section-t"><span id="rv-members-t">الأعضاء</span><button class="linkbtn" id="approve-all" type="button">اعتماد الكل</button></div>
+          <div id="rv-members"></div>
+          <div class="alert" id="rv-alert"></div>
+          <div class="actions"><span></span><button type="submit" class="btn btn-primary" id="rv-save">حفظ المراجعة</button></div>
+        </form>
+      </div>
+    </main>
+  </div>
 
   <footer><b>#نقود_المستقبل</b> · نادي الذكاء الاصطناعي — FCIT</footer>
 </div>
+<div class="toast" id="toast">تم الحفظ ✓</div>
 <div class="preview-badge" id="preview-badge">وضع المعاينة — البيانات ما تنحفظ</div>
 
 <script>
-// ─── عدّل الأقسام وأنواع الطلبات من هنا ───
-const ICONS = {
-  pr: '<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>',
-  media: '<path d="m3 11 18-5v12L3 14v-3z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/>',
-  tech: '<polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>',
-  hack: '<path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/>',
-  leads: '<path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><path d="M4 22v-7"/>',
-  events: '<rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/>',
-  task: '<path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>',
-  note: '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/>',
-  idea: '<path d="M9 18h6M10 22h4"/><path d="M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2V17h6v-.3c0-.8.4-1.5 1-2A7 7 0 0 0 12 2z"/>',
+const TASK_SIZES = ['صغيرة', 'متوسطة', 'كبيرة'];
+// الخانات اللي تنعرض للتعديل حسب النوع (المفاتيح لازم تطابق EDITABLE في Code.gs)
+const FIELD_LABELS = { title: 'العنوان', event: 'الفعالية', date: 'التاريخ', details: 'التفاصيل', size: 'حجم المهمة',
+  activity: 'نوع النشاط', organizer: 'الجهة المنظمة', result: 'النتيجة', output: 'المخرج' };
+const FIELDS_BY_KIND = {
+  'مهمة فردية': ['title', 'date', 'size', 'event', 'details', 'output'],
+  'مهمة جماعية': ['title', 'date', 'size', 'event', 'details', 'output'],
+  'مشاركة داخلية': ['title', 'date', 'details'],
+  'مشاركة خارجية': ['activity', 'title', 'organizer', 'date', 'result', 'details', 'output'],
 };
-
-const DEPARTMENTS = [
-  { id: 'pr',     label: 'العلاقات العامة' },
-  { id: 'media',  label: 'الإعلام والتسويق' },
-  { id: 'tech',   label: 'التقني' },
-  { id: 'hack',   label: 'الهاكاثونات' },
-  { id: 'events', label: 'التخطيط والفعاليات' },
-  { id: 'leads',  label: 'قادة المشاريع' },
-];
-
-const TYPES = [
-  { id: 'task', label: 'تنفيذ مهام ومشاريع', desc: 'دعم في تنفيذ مهمة أو مشروع',
-    title: 'اسم المهمة أو المشروع', details: 'وصف المطلوب',
-    fields: ['priority', 'deadline', 'link'] },
-  { id: 'note', label: 'ملاحظات ومشاكل', desc: 'ملاحظة أو مشكلة تحتاج متابعة',
-    title: 'الموضوع', details: 'التفاصيل',
-    fields: ['priority', 'link'] },
-  { id: 'idea', label: 'اقتراحات وأفكار', desc: 'مقترح لتطوير العمل أو النادي',
-    title: 'عنوان الاقتراح', details: 'وصف الاقتراح',
-    fields: ['link'] },
-];
-
-const STATUS_FLOW = ['جديد', 'قيد المراجعة', 'قيد التنفيذ', 'تم'];
 const STATUS_STYLE = {
-  'جديد': ['#e1ccff', 'rgba(126,54,227,.25)'],
-  'قيد المراجعة': ['#ffe08a', 'rgba(255,200,60,.14)'],
-  'قيد التنفيذ': ['#9fd0ff', 'rgba(80,160,255,.15)'],
-  'تم': ['#000', '#54d640'],
-  'غير مناسب': ['#ffb3b3', 'rgba(255,107,107,.15)'],
+  'بانتظار المراجعة': ['#ffe08a', 'rgba(255,200,60,.14)'],
+  'معتمد': ['#000', '#54d640'],
+  'مؤكد من الشهادات': ['#000', '#54d640'],
+  'مؤكد تلقائيًا': ['#9fd0ff', 'rgba(80,160,255,.15)'],
+  'مرفوض': ['#ffb3b3', 'rgba(255,107,107,.15)'],
 };
 
 // ─── الربط مع Apps Script (أو معاينة محلية لو فتحت الملف مباشرة) ───
 // رابط السكربت (/exec) — تستخدمه الواجهة لما تكون مستضافة برا قوقل (GitHub Pages).
-// خلّه فاضي '' عشان تشتغل المعاينة المحلية بدون ما تحفظ شي.
-const API_URL = 'https://script.google.com/macros/s/AKfycby8bpHq7AEhIU5TNcwHUCKUSRv6y-8JAOAi_xBRNG35g4xDpGBjTJCSU0iYkd8q4a7W9A/exec';
+const API_URL = 'https://script.google.com/macros/s/AKfycbxpHdw2_fSIKdt085rRdrR3VcvcVlK6hTULTTYBhP541m_Bj8xkot0e55mC-1vdvHqTSg/exec';
 const IS_GAS = typeof google !== 'undefined' && google.script && google.script.run;
 const IS_LIVE = IS_GAS || !!API_URL;
-const mockDb = {};
+
+const MOCK_Q = { pending: [
+  { id: 'MEM-7KQ', kind: 'مهمة جماعية', isTask: true, registeredAt: '2026/10/10', registrant: 'نورة أحمد الغامدي', forDept: 'الإعلام والتسويق', edited: false,
+    title: 'تصميم هوية هاكاثون 2026', event: 'Introduction to AI Workshop', date: '2026-10-08', details: 'صممت الشعار والألوان وقوالب البوستات', size: 'كبيرة',
+    activity: '', organizer: '', result: '', output: 'https://drive.google.com/file/x\nhttps://figma.com/file/y',
+    members: [
+      { sid: '2210345', name: 'نورة أحمد الغامدي', dept: 'الإعلام والتسويق', status: 'بانتظار المراجعة', reason: '', star: false, feedback: '', editable: true },
+      { sid: '2210777', name: 'جود فهد القحطاني', dept: 'التقني', status: 'بانتظار المراجعة', reason: '', star: false, feedback: '', editable: true },
+    ] },
+  { id: 'MEM-P3D', kind: 'مهمة فردية', isTask: true, registeredAt: '2026/10/11', registrant: 'ريم خالد العتيبي', forDept: 'الإعلام والتسويق', edited: false,
+    title: 'تصميم بوست الفعالية', event: '', date: '2026-10-10', details: 'بوست إعلان', size: 'صغيرة', activity: '', organizer: '', result: '', output: '',
+    members: [{ sid: '2210888', name: 'ريم خالد العتيبي', dept: 'الإعلام والتسويق', status: 'بانتظار المراجعة', reason: '', star: false, feedback: '', editable: true }] },
+], done: [] };
+
 function api(fn, arg) {
   if (IS_GAS) {
     return new Promise((res, rej) =>
       google.script.run.withSuccessHandler(res).withFailureHandler(rej)[fn](arg));
   }
   if (API_URL) {
-    const body = fn === 'submitRequest' ? { action: 'submit', data: arg } : { action: 'status', id: arg };
-    return fetch(API_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-      body: JSON.stringify(body),
-    })
+    const body = fn === 'login' ? { action: 'login', code: arg } : fn === 'getQueue' ? { action: 'queue', code: arg } : { action: 'review', data: arg };
+    return fetch(API_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(body) })
       .then(r => r.json(), () => { throw new Error('تعذّر الاتصال، تأكد من الإنترنت وحاول مرة ثانية.'); })
       .then(j => { if (!j.ok) throw new Error(j.error); return j.result; });
   }
-  return new Promise(res => setTimeout(() => {
-    if (fn === 'submitRequest') {
-      const C = '23456789ABCDEFGHJKMNPQRSTUVWXYZ';
-      let id;
-      do { id = 'SUP-' + C[Math.floor(Math.random() * C.length)] + C[Math.floor(Math.random() * C.length)]; } while (mockDb[id]);
-      const date = new Date().toLocaleString('ar-SA');
-      mockDb[id] = { id, date, dept: arg.dept, type: arg.type, title: arg.title,
-        status: 'قيد المراجعة', reply: 'تم استلام طلبك وجاري مراجعته (رد تجريبي).', updated: date };
-      res({ id, date });
-    } else {
-      res(mockDb[String(arg).trim().toUpperCase()] || null);
-    }
-  }, 700));
+  return new Promise((res, rej) => setTimeout(() => {
+    if (fn === 'login') return String(arg).trim() === 'x' ? rej(new Error('الرمز غير صحيح.')) : res({ dept: 'الإعلام والتسويق', isSupport: false, ratings: [] });
+    if (fn === 'getQueue') return res(JSON.parse(JSON.stringify(MOCK_Q)));
+    MOCK_Q.pending = MOCK_Q.pending.filter(x => x.id !== arg.id);
+    res({ ok: true });
+  }, 400));
 }
 
 const store = {
-  get(k, d) { try { return JSON.parse(localStorage.getItem('aic_' + k)) ?? d; } catch (e) { return d; } },
-  set(k, v) { try { localStorage.setItem('aic_' + k, JSON.stringify(v)); } catch (e) {} },
+  get(k, d) { try { return JSON.parse(localStorage.getItem('aicr_' + k)) ?? d; } catch (e) { return d; } },
+  set(k, v) { try { localStorage.setItem('aicr_' + k, JSON.stringify(v)); } catch (e) {} },
+  del(k) { try { localStorage.removeItem('aicr_' + k); } catch (e) {} },
 };
-
-// ─── الحالة والعناصر ───
 const $ = s => document.querySelector(s);
 const $$ = s => [...document.querySelectorAll(s)];
-const state = { dept: null, type: null, priority: 'متوسطة', step: 1 };
-
-function svg(name) {
-  return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' + ICONS[name] + '</svg>';
-}
-function optCard(item, onPick) {
-  const b = document.createElement('button');
-  b.type = 'button';
-  b.className = 'opt';
-  b.dataset.id = item.id;
-  b.innerHTML = '<div class="ic">' + svg(item.id) + '</div><b></b>' + (item.desc ? '<span></span>' : '');
-  b.querySelector('b').textContent = item.label;
-  if (item.desc) b.querySelector('span').textContent = item.desc;
-  b.addEventListener('click', () => onPick(item, b));
+function el(tag, cls, txt) { const n = document.createElement(tag); if (cls) n.className = cls; if (txt != null) n.textContent = txt; return n; }
+function showAlert(id, msg) { const a = $(id); a.textContent = msg; a.classList.add('show'); }
+function hideAlert(id) { $(id).classList.remove('show'); }
+function badge(status) {
+  const st = STATUS_STYLE[status] || STATUS_STYLE['بانتظار المراجعة'];
+  const b = el('span', 'badge', status);
+  b.style.color = st[0]; b.style.background = st[1];
   return b;
 }
+function toast(msg) { const t = $('#toast'); t.textContent = msg; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 1800); }
 
-function goStep(n) {
-  state.step = n;
-  $$('#view-new .step').forEach(s => s.classList.toggle('show', +s.dataset.step === n));
-  $$('#stepper > div').forEach(d => {
-    const s = +d.dataset.s;
-    d.classList.toggle('done', s < n);
-    d.classList.toggle('now', s === n);
+let ME = null, Q = { pending: [], done: [] }, LIST = 'pending', CUR = null;
+let loadSeq = 0; // يتجاهل الردود القديمة لو انطلب التحميل أكثر من مرة
+
+// يفرّغ القائمة والأرقام (عند الدخول والخروج) عشان ما تطلع أرقام جلسة قديمة
+function resetList(counts) {
+  Q = { pending: [], done: [] };
+  CUR = null;
+  LIST = 'pending';
+  $$('#list-tabs .tab').forEach(x => x.classList.toggle('active', x.dataset.list === 'pending'));
+  $('#c-pending').textContent = counts;
+  $('#c-done').textContent = counts;
+  $('#list').innerHTML = '';
+  $('#view-review').classList.add('hidden');
+  $('#view-list').classList.remove('hidden');
+}
+
+function showView(v) { ['loading', 'login', 'app'].forEach(x => $('#view-' + x).classList.toggle('hidden', x !== v)); }
+
+// ─── الدخول ───
+async function doLogin(code, silent) {
+  showView('loading');
+  try {
+    ME = await api('login', code);
+    store.set('code', code);
+    $('#who-dept').textContent = 'قسم ' + ME.dept;
+    $('#who-extra').textContent = ME.isSupport ? '· المهام + كل المشاركات' : '· المهام لصالح القسم';
+    resetList('0');
+    showView('app');
+    await loadQueue();
+  } catch (err) {
+    store.del('code');
+    showView('login');
+    if (!silent) showAlert('#login-alert', (err && err.message) || 'صار خطأ، حاول مرة ثانية.');
+  }
+}
+$('#login-form').addEventListener('submit', e => {
+  e.preventDefault();
+  hideAlert('#login-alert');
+  const code = $('#f-code').value.trim();
+  if (!code) { showAlert('#login-alert', 'اكتب رمز الدخول.'); return; }
+  doLogin(code, false);
+});
+$('#logout').addEventListener('click', () => { store.del('code'); ME = null; loadSeq++; resetList('0'); $('#f-code').value = ''; showView('login'); });
+function authFailed(err) {
+  if (err && err.message === 'الرمز غير صحيح.') {
+    store.del('code'); showView('login'); showAlert('#login-alert', 'تغيّر رمز الدخول. ادخل الرمز الجديد.'); return true;
+  }
+  return false;
+}
+
+// ─── القائمة ───
+async function loadQueue() {
+  const seq = ++loadSeq;
+  hideAlert('#list-alert');
+  $('#list').innerHTML = '<div class="empty">جاري التحميل…</div>';
+  let res;
+  try {
+    res = await api('getQueue', store.get('code', ''));
+  } catch (err) {
+    if (seq !== loadSeq) return;
+    if (authFailed(err)) return;
+    $('#list').innerHTML = '';
+    showAlert('#list-alert', (err && err.message) || 'تعذّر جلب التسجيلات.');
+    return;
+  }
+  if (seq !== loadSeq) return; // وصل رد أحدث
+  Q = res;
+  $('#c-pending').textContent = Q.pending.length;
+  $('#c-done').textContent = Q.done.length;
+  renderList();
+}
+function renderList() {
+  const box = $('#list');
+  box.innerHTML = '';
+  const items = Q[LIST];
+  if (!items.length) {
+    box.appendChild(el('div', 'empty', LIST === 'pending' ? 'ما فيه تسجيلات بانتظار المراجعة 🎉' : 'ما فيه مراجعات هذا الشهر.'));
+    return;
+  }
+  items.forEach(it => {
+    const b = el('button', 'item');
+    b.type = 'button';
+    const info = el('div');
+    const t = el('b');
+    t.appendChild(el('span', 'kind' + (it.isTask ? '' : ' part'), it.kind));
+    t.appendChild(document.createTextNode(it.title));
+    info.appendChild(t);
+    const names = it.members.map(m => m.name).join('، ');
+    info.appendChild(el('div', 'meta', names));
+    info.appendChild(el('div', 'meta', (it.isTask ? 'تاريخ المهمة: ' : 'تاريخ المشاركة: ') + String(it.date).replace(/-/g, '/') + ' · رُفع: ' + it.registeredAt));
+    b.appendChild(info);
+    b.appendChild(el('span', 'go', LIST === 'pending' ? 'مراجعة ←' : 'تعديل ←'));
+    b.addEventListener('click', () => openReview(it));
+    box.appendChild(b);
   });
-  $('#stepper').classList.toggle('hidden', n === 4);
+}
+$$('#list-tabs .tab').forEach(t => t.addEventListener('click', () => {
+  LIST = t.dataset.list;
+  $$('#list-tabs .tab').forEach(x => x.classList.toggle('active', x === t));
+  $('#view-review').classList.add('hidden');
+  $('#view-list').classList.remove('hidden');
+  renderList();
+}));
+
+// ─── المراجعة ───
+// اسم مختصر للرابط بدل الرابط الطويل
+function linkLabel(u) {
+  if (/drive\.google\.com|docs\.google\.com/.test(u)) return '📎 فتح الملف';
+  try { return '🔗 ' + new URL(u).hostname.replace(/^www\./, ''); } catch (e) { return '🔗 فتح الرابط'; }
+}
+function fieldBox(key, label, node) {
+  const w = el('div', 'field');
+  w.dataset.f = key;
+  const l = el('label', null, label);
+  w.append(l, node);
+  return w;
+}
+function openReview(it) {
+  CUR = JSON.parse(JSON.stringify(it));
+  hideAlert('#rv-alert');
+  $('#view-list').classList.add('hidden');
+  $('#view-review').classList.remove('hidden');
+  $('#rv-title').textContent = it.kind;
+  $('#rv-meta').innerHTML = '';
+  const meta = [it.id, 'سجّله: ' + it.registrant, 'رُفع: ' + it.registeredAt];
+  if (it.isTask) meta.push('لصالح: ' + it.forDept);
+  if (it.edited) meta.push('✏️ عُدّل من القائد');
+  $('#rv-meta').textContent = meta.join(' · ');
+
+  // الخانات (القائد يقدر يعدّل أي شي كتبه العضو)
+  const box = $('#rv-fields');
+  box.innerHTML = '';
+  (FIELDS_BY_KIND[it.kind] || ['title', 'date', 'details']).forEach(k => {
+    let node;
+    if (k === 'size') {
+      node = el('div', 'seg');
+      TASK_SIZES.forEach(s => {
+        const b = el('button', s === it.size ? 'sel' : '', s);
+        b.type = 'button';
+        b.addEventListener('click', () => { CUR.size = s; [...node.children].forEach(x => x.classList.toggle('sel', x === b)); });
+        node.appendChild(b);
+      });
+    } else if (k === 'details') {
+      node = el('textarea'); node.value = it.details || ''; node.maxLength = 3000; node.style.minHeight = '90px';
+    } else if (k === 'output') {
+      node = el('div');
+      const links = el('div', 'links');
+      String(it.output || '').split(/\s+/).filter(x => /^https?:\/\//.test(x)).forEach(u => {
+        const a = el('a', null, linkLabel(u)); a.href = u; a.target = '_blank'; a.rel = 'noopener'; a.title = u; links.appendChild(a);
+      });
+      if (!links.children.length) links.appendChild(el('div', 'locked', 'ما فيه مخرج.'));
+      const edit = el('button', 'linkbtn', 'تعديل الرابط');
+      edit.type = 'button';
+      edit.style.marginTop = '6px';
+      const i = el('textarea'); i.value = it.output || ''; i.dir = 'ltr'; i.style.minHeight = '60px'; i.style.marginTop = '8px'; i.dataset.k = 'output';
+      i.classList.add('hidden');
+      edit.addEventListener('click', () => { i.classList.toggle('hidden'); if (!i.classList.contains('hidden')) i.focus(); });
+      node.append(links, edit, i);
+    } else {
+      node = el('input'); node.value = it[k] || '';
+      if (k === 'date') { node.type = 'date'; }
+      node.maxLength = 300;
+    }
+    if (node.tagName !== 'DIV') node.dataset.k = k;
+    box.appendChild(fieldBox(k, FIELD_LABELS[k], node));
+  });
+
+  // الأعضاء
+  const mb = $('#rv-members');
+  mb.innerHTML = '';
+  $('#rv-members-t').textContent = it.members.length > 1 ? 'الأعضاء (' + it.members.length + ')' : 'العضو';
+  $('#approve-all').classList.toggle('hidden', it.members.filter(m => m.editable).length < 2);
+  CUR.members.forEach(m => {
+    m.decision = m.status === 'معتمد' ? 'approve' : m.status === 'مرفوض' ? 'reject' : '';
+    const c = el('div', 'mrev');
+    c.dataset.sid = m.sid;
+    const top = el('div', 'mrev-top');
+    const nm = el('div');
+    nm.appendChild(el('b', null, m.name));
+    nm.appendChild(el('span', 'd', m.dept));
+    top.append(nm, badge(m.status));
+    c.appendChild(top);
+    if (!m.editable) {
+      c.appendChild(el('div', 'locked', m.status === 'مؤكد من الشهادات' ? 'تأكد من سجل الحضور، وما يحتاج مراجعة.' : 'المراجعة مقفلة (مرّ عليها الشهر).'));
+      mb.appendChild(c);
+      return;
+    }
+    const dec = el('div', 'decide');
+    [['approve', it.isTask ? 'اعتماد ✓' : 'تأكيد ✓'], ['reject', 'رفض ✗']].forEach(([v, t]) => {
+      const b = el('button', m.decision === v ? 'sel' : '', t);
+      b.type = 'button'; b.dataset.v = v;
+      b.addEventListener('click', () => { m.decision = v; syncMember(c, m); c.classList.remove('err'); });
+      dec.appendChild(b);
+    });
+    c.appendChild(dec);
+    const rw = fieldBox('reason', 'سبب الرفض', el('textarea'));
+    rw.classList.add('reason');
+    rw.querySelector('textarea').value = m.reason || '';
+    c.appendChild(rw);
+    if (it.isTask) {
+      const extra = el('div', 'approve-extra');
+      const st = el('label', 'star');
+      const cb = el('input'); cb.type = 'checkbox'; cb.className = 'm-star'; cb.checked = !!m.star;
+      st.append(cb, document.createTextNode('🏅 أداء مميز'));
+      extra.appendChild(st);
+      (ME.ratings || []).forEach(f => {
+        const row = el('div', 'rq');
+        row.dataset.key = f.key;
+        row.appendChild(el('span', null, f.label.replace(/^تقييم:\s*/, '')));
+        const stars = el('div', 'stars');
+        for (let n = 1; n <= 5; n++) {
+          const s = el('button', +m[f.key] >= n ? 'on' : '', '★');
+          s.type = 'button';
+          s.addEventListener('click', () => { m[f.key] = n; [...stars.children].forEach((x, i) => x.classList.toggle('on', i < n)); });
+          stars.appendChild(s);
+        }
+        row.appendChild(stars);
+        extra.appendChild(row);
+      });
+      const fb = fieldBox('feedback', 'الفيدباك', el('textarea'));
+      fb.querySelector('label').appendChild(el('span', 'opt-l', ' (ما يظهر للعضو)'));
+      fb.querySelector('textarea').value = m.feedback || '';
+      extra.appendChild(fb);
+      c.appendChild(extra);
+    }
+    syncMember(c, m);
+    mb.appendChild(c);
+  });
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
-
-function markSel(grid, id) {
-  $$(grid + ' .opt').forEach(o => o.classList.toggle('sel', o.dataset.id === id));
+function syncMember(c, m) {
+  [...c.querySelectorAll('.decide button')].forEach(b => b.classList.toggle('sel', b.dataset.v === m.decision));
+  c.querySelector('.reason').classList.toggle('hidden', m.decision !== 'reject');
+  const ex = c.querySelector('.approve-extra');
+  if (ex) ex.classList.toggle('hidden', m.decision !== 'approve');
 }
+$('#approve-all').addEventListener('click', () => {
+  CUR.members.forEach(m => {
+    if (!m.editable) return;
+    m.decision = 'approve';
+    const c = $('#rv-members .mrev[data-sid="' + m.sid + '"]');
+    syncMember(c, m); c.classList.remove('err');
+  });
+});
+$('#rv-back').addEventListener('click', () => { $('#view-review').classList.add('hidden'); $('#view-list').classList.remove('hidden'); });
 
-DEPARTMENTS.forEach(d => $('#dept-grid').appendChild(optCard(d, item => {
-  state.dept = item;
-  markSel('#dept-grid', item.id);
-  setTimeout(() => goStep(2), 220);
-})));
-
-TYPES.forEach(t => $('#type-grid').appendChild(optCard(t, item => {
-  state.type = item;
-  markSel('#type-grid', item.id);
-  setTimeout(() => { prepareForm(); goStep(3); }, 220);
-})));
-
-function prepareForm() {
-  const t = state.type;
-  $('#chip-dept').textContent = state.dept.label;
-  $('#chip-type').textContent = t.label;
-  $('#l-title').textContent = t.title;
-  $('#l-details').textContent = t.details;
-  ['priority', 'deadline', 'link'].forEach(f =>
-    $('.field[data-f="' + f + '"]').classList.toggle('hidden', !t.fields.includes(f)));
-  const row = $('.row2');
-  row.classList.toggle('hidden', !t.fields.includes('deadline') && !t.fields.includes('link'));
-  row.style.gridTemplateColumns = (t.fields.includes('deadline') && t.fields.includes('link')) ? '' : '1fr';
-  hideAlert();
-  setTimeout(() => ($('#f-name').value ? $('#f-title') : $('#f-name')).focus(), 350);
-}
-
-$$('[data-back]').forEach(b => b.addEventListener('click', () => goStep(+b.dataset.back)));
-
-$$('#f-priority button').forEach(b => b.addEventListener('click', () => {
-  state.priority = b.dataset.v;
-  $$('#f-priority button').forEach(x => x.classList.toggle('sel', x === b));
-}));
-
-function showAlert(msg) { const a = $('#form-alert'); a.textContent = msg; a.classList.add('show'); }
-function hideAlert() { $('#form-alert').classList.remove('show'); $$('.field.err').forEach(f => f.classList.remove('err')); }
-
-$('#req-form').addEventListener('submit', async e => {
+$('#rv-form').addEventListener('submit', async e => {
   e.preventDefault();
-  hideAlert();
-  const t = state.type;
-  const val = id => $('#f-' + id).value.trim();
-  const missing = ['name', 'title', 'details'].filter(f => !val(f));
-  if (missing.length) {
-    missing.forEach(f => $('.field[data-f="' + f + '"]').classList.add('err'));
-    showAlert('يرجى تعبئة الحقول المطلوبة.');
-    $('#f-' + missing[0]).focus();
-    return;
-  }
-  let link = t.fields.includes('link') ? val('link') : '';
-  if (link && !/^https?:\/\//i.test(link)) link = 'https://' + link; // لو نسي https
-  if (link && !/^https?:\/\/[^\s.]+\.\S+$/i.test(link)) {
-    $('.field[data-f="link"]').classList.add('err');
-    showAlert('الرابط غير صحيح.');
-    $('#f-link').focus();
-    return;
-  }
-  const payload = {
-    dept: state.dept.label, type: t.label, name: val('name'), title: val('title'), details: val('details'),
-    priority: t.fields.includes('priority') ? state.priority : '',
-    deadline: t.fields.includes('deadline') ? val('deadline') : '',
-    link,
-  };
-  const btn = $('#submit-btn');
-  btn.disabled = true;
-  btn.innerHTML = '<span class="spin"></span> جاري الإرسال…';
-  try {
-    const res = await api('submitRequest', payload);
-    store.set('name', payload.name);
-    const recent = store.get('recent', []).filter(x => x !== res.id);
-    recent.unshift(res.id);
-    store.set('recent', recent.slice(0, 6));
-    $('#ticket-id').textContent = res.id;
-    goStep(4);
-  } catch (err) {
-    showAlert((err && err.message) || 'صار خطأ أثناء الإرسال، حاول مرة ثانية.');
-  } finally {
-    btn.disabled = false;
-    btn.textContent = 'إرسال الطلب';
-  }
-});
-
-$('#copy-btn').addEventListener('click', async () => {
-  const id = $('#ticket-id').textContent;
-  try { await navigator.clipboard.writeText(id); }
-  catch (e) {
-    // داخل قوقل النسخ المباشر ممنوع، فننسخ من خانة مخفية فيها الرقم بس
-    const t = document.createElement('textarea');
-    t.value = id;
-    t.setAttribute('readonly', '');
-    t.style.cssText = 'position:fixed;top:0;left:0;opacity:0;';
-    document.body.appendChild(t);
-    t.select();
-    try { document.execCommand('copy'); } catch (e2) {}
-    t.remove();
-    getSelection().removeAllRanges();
-  }
-  $('#copy-btn').textContent = 'تم النسخ ✓';
-  setTimeout(() => ($('#copy-btn').textContent = 'نسخ'), 1600);
-});
-
-$('#new-req').addEventListener('click', () => {
-  $('#req-form').reset();
-  $('#f-name').value = store.get('name', '');
-  state.dept = null;
-  state.type = null;
-  state.priority = 'متوسطة';
-  $$('#f-priority button').forEach(x => x.classList.toggle('sel', x.dataset.v === 'متوسطة'));
-  markSel('#dept-grid', null);
-  markSel('#type-grid', null);
-  goStep(1);
-});
-
-$('#track-this').addEventListener('click', () => {
-  switchView('track');
-  $('#track-id').value = $('#ticket-id').textContent;
-  track();
-});
-
-// ─── التبويبات ───
-function switchView(v) {
-  $$('.tab').forEach(t => t.classList.toggle('active', t.dataset.view === v));
-  $('#view-new').classList.toggle('hidden', v !== 'new');
-  $('#view-track').classList.toggle('hidden', v !== 'track');
-  if (v === 'track') renderRecent();
-}
-$$('.tab').forEach(t => t.addEventListener('click', () => switchView(t.dataset.view)));
-
-// ─── المتابعة ───
-function renderRecent() {
-  const list = store.get('recent', []);
-  const box = $('#recent');
-  box.innerHTML = '';
-  box.classList.toggle('hidden', !list.length);
-  if (!list.length) return;
-  const l = document.createElement('span'); l.textContent = 'طلباتك الأخيرة:'; box.appendChild(l);
-  list.forEach(id => {
-    const c = document.createElement('button');
-    c.className = 'chip'; c.type = 'button'; c.textContent = id;
-    c.addEventListener('click', () => { $('#track-id').value = id; track(); });
-    box.appendChild(c);
-  });
-}
-
-async function track() {
-  // يلقط رقم الطلب حتى لو انلصق معه كلام زيادة
-  const raw = $('#track-id').value.trim().toUpperCase();
-  const m = raw.match(/SUP\s*-?\s*([A-Z0-9]{2,4})\b/) || raw.match(/^([A-Z0-9]{2,4})$/);
-  const id = m ? 'SUP-' + m[1] : raw;
-  if (m) $('#track-id').value = id;
-  const out = $('#result');
-  if (!id) { $('#track-id').focus(); return; }
-  const btn = $('#track-btn');
-  btn.disabled = true;
-  btn.innerHTML = '<span class="spin"></span>';
-  out.className = 'result';
-  try {
-    const r = await api('getRequestStatus', id);
-    out.innerHTML = '';
-    if (!r) {
-      out.innerHTML = '<div class="empty">لا يوجد طلب بهذا الرقم.</div>';
-    } else {
-      out.appendChild(renderResult(r));
+  hideAlert('#rv-alert');
+  $$('#rv-members .mrev.err, #rv-fields .field.err').forEach(x => x.classList.remove('err'));
+  const fields = {};
+  $$('#rv-fields [data-k]').forEach(n => { fields[n.dataset.k] = n.value.trim(); });
+  if ('size' in CUR) fields.size = CUR.size;
+  if (!fields.title) { $('#rv-fields .field[data-f="title"]').classList.add('err'); showAlert('#rv-alert', 'العنوان ما يكون فاضي.'); return; }
+  const members = [];
+  let bad = null;
+  CUR.members.forEach(m => {
+    if (!m.editable) return;
+    const c = $('#rv-members .mrev[data-sid="' + m.sid + '"]');
+    const d = { sid: m.sid, decision: m.decision || '' };
+    if (m.decision === 'reject') {
+      d.reason = c.querySelector('.reason textarea').value.trim();
+      if (!d.reason) { c.classList.add('err'); bad = bad || 'اكتب سبب الرفض.'; }
     }
+    if (m.decision === 'approve' && CUR.isTask) {
+      d.star = c.querySelector('.m-star').checked;
+      d.feedback = c.querySelector('.approve-extra textarea').value.trim();
+      (ME.ratings || []).forEach(f => { d[f.key] = m[f.key] || ''; });
+    }
+    members.push(d);
+  });
+  const anyDecision = members.some(d => d.decision);
+  if (bad) { showAlert('#rv-alert', bad); return; }
+  if (!anyDecision && LIST === 'pending') { showAlert('#rv-alert', 'اختر اعتماد أو رفض لعضو واحد على الأقل.'); return; }
+
+  const btn = $('#rv-save');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spin"></span> جاري الحفظ…';
+  try {
+    await api('saveReview', { code: store.get('code', ''), id: CUR.id, fields, members });
+    toast('تم حفظ المراجعة ✓');
+    $('#view-review').classList.add('hidden');
+    $('#view-list').classList.remove('hidden');
+    await loadQueue();
   } catch (err) {
-    out.innerHTML = '<div class="empty"></div>';
-    out.firstChild.textContent = (err && err.message) || 'صار خطأ، حاول مرة ثانية.';
+    if (authFailed(err)) return;
+    showAlert('#rv-alert', (err && err.message) || 'صار خطأ أثناء الحفظ، حاول مرة ثانية.');
   } finally {
     btn.disabled = false;
-    btn.textContent = 'تحقق';
-    void out.offsetWidth;
-    out.classList.add('show');
+    btn.textContent = 'حفظ المراجعة';
   }
-}
-$('#track-form').addEventListener('submit', e => { e.preventDefault(); track(); });
-
-function el(tag, cls, txt) {
-  const n = document.createElement(tag);
-  if (cls) n.className = cls;
-  if (txt != null) n.textContent = txt;
-  return n;
-}
-
-// يحوّل الروابط في رد الفريق لروابط قابلة للضغط (http/https فقط)
-function linkify(text) {
-  const p = el('p');
-  text.split(/(https?:\/\/[^\s]+)/g).forEach((part, i) => {
-    if (i % 2) {
-      const a = el('a', null, part);
-      a.href = part; a.target = '_blank'; a.rel = 'noopener';
-      p.appendChild(a);
-    } else if (part) p.appendChild(document.createTextNode(part));
-  });
-  return p;
-}
-
-function renderResult(r) {
-  const box = el('div');
-  const head = el('div', 'res-head');
-  const left = el('div');
-  left.appendChild(el('h3', null, r.title));
-  left.appendChild(el('div', 'res-meta', r.id + ' · ' + r.dept + ' · ' + r.type));
-  left.appendChild(el('div', 'res-meta', 'أُرسل: ' + r.date + (r.updated ? '  ·  آخر تحديث: ' + r.updated : '')));
-  const st = STATUS_STYLE[r.status] || STATUS_STYLE['جديد'];
-  const badge = el('span', 'badge', r.status);
-  badge.style.color = st[0]; badge.style.background = st[1];
-  head.append(left, badge);
-  box.appendChild(head);
-
-  const tl = el('div', 'timeline');
-  const rejected = r.status === 'غير مناسب';
-  const idx = rejected ? 1 : Math.max(0, STATUS_FLOW.indexOf(r.status));
-  const flow = rejected ? ['جديد', 'غير مناسب'] : STATUS_FLOW;
-  flow.forEach((s, i) => {
-    const step = el('div', 'tl');
-    if (i <= idx) step.classList.add('on');
-    if (i === idx) step.classList.add(rejected ? 'rej' : 'cur');
-    step.appendChild(el('div', 'dot'));
-    step.appendChild(el('span', null, s));
-    tl.appendChild(step);
-  });
-  box.appendChild(tl);
-
-  if (r.reply) {
-    const rep = el('div', 'reply');
-    rep.appendChild(el('b', null, rejected ? 'السبب' : 'رد فريق الدعم والتطوير'));
-    rep.appendChild(linkify(String(r.reply)));
-    box.appendChild(rep);
-  }
-  return box;
-}
+});
 
 // ─── تهيئة ───
-$('#f-name').value = store.get('name', '');
-// يشيل اللون الأحمر عن الخانة أول ما يبدأ يكتب فيها
-$$('#req-form input, #req-form textarea').forEach(i => i.addEventListener('input', () => {
-  i.closest('.field').classList.remove('err');
-  if (!$$('.field.err').length) $('#form-alert').classList.remove('show');
-}));
-// الموعد المطلوب ما يقبل تاريخ قبل اليوم
-{
-  const d = new Date();
-  $('#f-deadline').min = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
-}
 if (!IS_LIVE) $('#preview-badge').style.display = 'block';
-goStep(1);
+const saved = store.get('code', '');
+if (saved) doLogin(saved, true); else showView('login');
 </script>
 </body>
 </html>
