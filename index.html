@@ -145,14 +145,30 @@
   .field textarea { min-height: 130px; resize: vertical; }
   .field input:focus, .field textarea:focus { outline: none; border-color: var(--green); box-shadow: 0 0 0 3px var(--green-soft); }
   .field input[type=date] { color-scheme: dark; }
+  /* التاريخ: نفس عرض الحقول، أيقونة، وصيغة داخلية لما يكون فاضي (الجوال ما يعرض شي) */
+  .date-box { position: relative; }
+  .field .date-box input[type=date] {
+    -webkit-appearance: none; appearance: none; display: block; min-width: 0; max-width: 100%;
+    height: 48px; text-align: right; cursor: pointer; position: relative; padding-left: 44px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%239a9aa8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='4' width='18' height='18' rx='2'/%3E%3Cpath d='M16 2v4M8 2v4M3 10h18'/%3E%3C/svg%3E");
+    background-repeat: no-repeat; background-position: left 14px center; background-size: 18px;
+  }
+  .date-box input::-webkit-date-and-time-value { text-align: right; margin: 0; }
+  .date-box input::-webkit-calendar-picker-indicator { position: absolute; inset: 0; width: auto; height: auto; opacity: 0; cursor: pointer; }
+  .date-box.blank input::-webkit-datetime-edit { color: transparent; }
+  .date-box.blank input:focus::-webkit-datetime-edit { color: var(--text); }
+  .date-ph { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); color: #6b6b78; font-size: 15px; pointer-events: none; }
+  .date-box:not(.blank) .date-ph, .date-box input:focus + .date-ph { display: none; }
+  @supports (-moz-appearance: none) { .date-ph { display: none; } }
+  @media (max-width: 560px) { input, textarea, select, .date-ph { font-size: 16px !important; } }
   .field.err input, .field.err textarea { border-color: var(--danger); }
   .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
   @media (max-width: 560px) { .row2 { grid-template-columns: 1fr; } }
 
   .seg { display: flex; gap: 6px; flex-wrap: wrap; }
   .seg button {
-    flex: 1; min-width: 70px; font: inherit; font-size: 14px; cursor: pointer; color: var(--muted);
-    background: var(--surface-2); border: 1px solid var(--border); border-radius: 10px; padding: 10px 8px; transition: .15s;
+    flex: 1 1 auto; min-width: 70px; font: inherit; font-size: 14px; cursor: pointer; color: var(--muted); white-space: nowrap;
+    background: var(--surface-2); border: 1px solid var(--border); border-radius: 10px; padding: 10px 12px; transition: .15s;
   }
   .seg button.sel { color: #000; background: var(--green); border-color: var(--green); font-weight: 600; }
   .seg button[data-v="عاجلة"].sel { background: #ff8a5c; border-color: #ff8a5c; }
@@ -603,7 +619,17 @@ function openReview(it) {
       node.maxLength = 300;
     }
     if (node.tagName !== 'DIV') node.dataset.k = k;
-    box.appendChild(fieldBox(k, FIELD_LABELS[k], node));
+    let shown = node;
+    if (node.type === 'date') { // نفس حقل التاريخ في نماذج الأعضاء: أيقونة + "اختر التاريخ" لو فاضي
+      const input = node;
+      shown = el('div', 'date-box');
+      const sync = () => shown.classList.toggle('blank', !input.value);
+      input.addEventListener('input', sync);
+      input.addEventListener('change', sync);
+      shown.append(input, el('span', 'date-ph', 'اختر التاريخ'));
+      sync();
+    }
+    box.appendChild(fieldBox(k, FIELD_LABELS[k], shown));
   });
 
   // الأعضاء
