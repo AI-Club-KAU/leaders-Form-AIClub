@@ -35,18 +35,16 @@
     line-height: 1.6;
   }
   /* خلفية: توهج أخضر/بنفسجي مثل خلفيات الهوية */
-  .glow { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
-  .glow::before, .glow::after {
-    content: ""; position: absolute; width: 60vmax; height: 60vmax; border-radius: 50%;
-    filter: blur(90px); opacity: .35;
-  }
-  .glow::before { background: var(--purple); top: -30vmax; right: -20vmax; }
-  .glow::after  { background: var(--green);  bottom: -38vmax; left: -25vmax; opacity: .18; }
+  /* بتدرج بدل filter: blur — نفس الشكل وأخف بكثير على التمرير */
+  .glow { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; transform: translateZ(0); }
+  .glow::before, .glow::after { content: ""; position: absolute; width: 90vmax; height: 90vmax; border-radius: 50%; }
+  .glow::before { background: radial-gradient(closest-side, rgba(126,54,227,.35), rgba(126,54,227,0)); top: -45vmax; right: -35vmax; }
+  .glow::after  { background: radial-gradient(closest-side, rgba(84,214,64,.18), rgba(84,214,64,0)); bottom: -53vmax; left: -40vmax; }
   .pixels { position: fixed; pointer-events: none; z-index: 0; display: grid; grid-template-columns: repeat(2, 22px); }
   .pixels i { width: 22px; height: 22px; display: block; }
   .px-a { top: 120px; left: 6%; }
   .px-b { bottom: 70px; right: 7%; }
-  @media (max-width: 700px) { .pixels { display: none; } }
+  @media (max-width: 1000px) { .pixels { display: none; } }
 
   .wrap { position: relative; z-index: 1; max-width: 860px; margin: 0 auto; padding: 28px 16px 40px; }
 
@@ -73,7 +71,7 @@
   .tab.active { background: var(--text); color: #000; }
 
   .card {
-    background: rgba(12,12,16,.82); backdrop-filter: blur(14px);
+    background: rgba(12,12,16,.9);
     border: 1px solid var(--border); border-radius: 24px; padding: 28px;
     min-height: 480px; /* نفس الحجم في التبويبين */
   }
@@ -160,6 +158,11 @@
   .date-ph { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); color: #6b6b78; font-size: 15px; pointer-events: none; }
   .date-box:not(.blank) .date-ph, .date-box input:focus + .date-ph { display: none; }
   @supports (-moz-appearance: none) { .date-ph { display: none; } }
+  @media (hover: hover) and (pointer: fine) {
+    .date-ph { display: none !important; }
+    .date-box.blank input::-webkit-datetime-edit { color: #6b6b78; }
+  }
+  .row2 > .field { min-width: 0; }
   @media (max-width: 560px) { input, textarea, select, .date-ph { font-size: 16px !important; } }
   .field.err input, .field.err textarea { border-color: var(--danger); }
   .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
@@ -295,6 +298,8 @@
   .stars { display: flex; gap: 2px; }
   .stars button { font: inherit; font-size: 24px; line-height: 1; padding: 2px 3px; background: none; border: 0; cursor: pointer; color: #3a3a48; }
   .stars button.on { color: #ffc94d; }
+  .rq span { flex: 1 1 220px; line-height: 1.6; }
+  .rq.err { border-color: var(--danger); }
   .toast { position: fixed; bottom: 18px; left: 50%; transform: translateX(-50%); z-index: 9; padding: 10px 18px; border-radius: 12px; background: var(--green); color: #000; font-weight: 600; font-size: 14px; display: none; }
   .toast.show { display: block; }
 </style>
@@ -384,12 +389,15 @@
 const TASK_SIZES = ['صغيرة', 'متوسطة', 'كبيرة'];
 // الخانات اللي تنعرض للتعديل حسب النوع (المفاتيح لازم تطابق EDITABLE في Code.gs)
 const FIELD_LABELS = { title: 'العنوان', event: 'الفعالية', date: 'التاريخ', details: 'التفاصيل', size: 'حجم المهمة',
-  activity: 'نوع النشاط', organizer: 'الجهة المنظمة', result: 'النتيجة', output: 'المخرج' };
+  activity: 'نوع النشاط', organizer: 'الجهة المنظمة', result: 'النتيجة', output: 'المخرج',
+  due: 'التسليم المطلوب', delivered: 'التسليم الفعلي', start: 'من' };
+const DATE_KEYS = ['date', 'due', 'delivered', 'start'];
+const DATE_PAIRS = { due: 'delivered', start: 'date' }; // ينعرضون جنب بعض
 const FIELDS_BY_KIND = {
-  'مهمة فردية': ['title', 'date', 'size', 'event', 'details', 'output'],
-  'مهمة جماعية': ['title', 'date', 'size', 'event', 'details', 'output'],
-  'مشاركة داخلية': ['title', 'date', 'details'],
-  'مشاركة خارجية': ['activity', 'title', 'organizer', 'date', 'result', 'details', 'output'],
+  'مهمة فردية': ['title', 'due', 'delivered', 'date', 'size', 'event', 'details', 'output'],
+  'مهمة جماعية': ['title', 'due', 'delivered', 'date', 'size', 'event', 'details', 'output'],
+  'مشاركة داخلية': ['title', 'start', 'date', 'details', 'output'],
+  'مشاركة خارجية': ['activity', 'title', 'organizer', 'start', 'date', 'result', 'details', 'output'],
 };
 const STATUS_STYLE = {
   'بانتظار المراجعة': ['#ffe08a', 'rgba(255,200,60,.14)'],
@@ -587,6 +595,7 @@ function openReview(it) {
   // الخانات (القائد يقدر يعدّل أي شي كتبه العضو)
   const box = $('#rv-fields');
   box.innerHTML = '';
+  let pair = null; // صف التاريخين
   (FIELDS_BY_KIND[it.kind] || ['title', 'date', 'details']).forEach(k => {
     let node;
     if (k === 'size') {
@@ -615,7 +624,7 @@ function openReview(it) {
       node.append(links, edit, i);
     } else {
       node = el('input'); node.value = it[k] || '';
-      if (k === 'date') { node.type = 'date'; }
+      if (DATE_KEYS.includes(k)) { node.type = 'date'; }
       node.maxLength = 300;
     }
     if (node.tagName !== 'DIV') node.dataset.k = k;
@@ -629,7 +638,11 @@ function openReview(it) {
       shown.append(input, el('span', 'date-ph', 'اختر التاريخ'));
       sync();
     }
-    box.appendChild(fieldBox(k, FIELD_LABELS[k], shown));
+    const label = k === 'date' ? (it.isTask ? 'تاريخ الانتهاء' : 'إلى') : FIELD_LABELS[k];
+    const fb = fieldBox(k, label, shown);
+    if (DATE_PAIRS[k]) { pair = el('div', 'row2'); box.appendChild(pair); pair.appendChild(fb); }
+    else if (pair && Object.values(DATE_PAIRS).includes(k)) { pair.appendChild(fb); pair = null; }
+    else box.appendChild(fb);
   });
 
   // الأعضاء
@@ -673,21 +686,18 @@ function openReview(it) {
       (ME.ratings || []).forEach(f => {
         const row = el('div', 'rq');
         row.dataset.key = f.key;
-        row.appendChild(el('span', null, f.label.replace(/^تقييم:\s*/, '')));
+        row.appendChild(el('span', null, f.q || f.label.replace(/^تقييم:\s*/, '')));
         const stars = el('div', 'stars');
         for (let n = 1; n <= 5; n++) {
           const s = el('button', +m[f.key] >= n ? 'on' : '', '★');
           s.type = 'button';
-          s.addEventListener('click', () => { m[f.key] = n; [...stars.children].forEach((x, i) => x.classList.toggle('on', i < n)); });
+          s.setAttribute('aria-label', n + ' من 5');
+          s.addEventListener('click', () => { m[f.key] = n; row.classList.remove('err'); [...stars.children].forEach((x, i) => x.classList.toggle('on', i < n)); });
           stars.appendChild(s);
         }
         row.appendChild(stars);
         extra.appendChild(row);
       });
-      const fb = fieldBox('feedback', 'الفيدباك', el('textarea'));
-      fb.querySelector('label').appendChild(el('span', 'opt-l', ' (ما يظهر للعضو)'));
-      fb.querySelector('textarea').value = m.feedback || '';
-      extra.appendChild(fb);
       c.appendChild(extra);
     }
     syncMember(c, m);
@@ -714,7 +724,7 @@ $('#rv-back').addEventListener('click', () => { $('#view-review').classList.add(
 $('#rv-form').addEventListener('submit', async e => {
   e.preventDefault();
   hideAlert('#rv-alert');
-  $$('#rv-members .mrev.err, #rv-fields .field.err').forEach(x => x.classList.remove('err'));
+  $$('#rv-members .mrev.err, #rv-members .rq.err, #rv-fields .field.err').forEach(x => x.classList.remove('err'));
   const fields = {};
   $$('#rv-fields [data-k]').forEach(n => { fields[n.dataset.k] = n.value.trim(); });
   if ('size' in CUR) fields.size = CUR.size;
@@ -731,8 +741,10 @@ $('#rv-form').addEventListener('submit', async e => {
     }
     if (m.decision === 'approve' && CUR.isTask) {
       d.star = c.querySelector('.m-star').checked;
-      d.feedback = c.querySelector('.approve-extra textarea').value.trim();
-      (ME.ratings || []).forEach(f => { d[f.key] = m[f.key] || ''; });
+      (ME.ratings || []).forEach(f => {
+        d[f.key] = m[f.key] || '';
+        if (!d[f.key]) { c.querySelector('.rq[data-key="' + f.key + '"]').classList.add('err'); c.classList.add('err'); bad = bad || 'قيّم كل عضو تعتمده في الأسئلة الثلاثة (من 1 إلى 5).'; }
+      });
     }
     members.push(d);
   });
