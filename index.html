@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>مراجعة أعمال الأعضاء | نادي الذكاء الاصطناعي</title>
+<title>بوابة القادة | نادي الذكاء الاصطناعي</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Readex+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -261,6 +261,14 @@
   .linkbtn:hover { color: var(--text); }
   #list-tabs .tab { white-space: nowrap; }
   @media (max-width: 400px) { #list-tabs .tab { padding: 9px 12px; font-size: 13px; } }
+  /* 3 تبويبات: على الجوال تاخذ العرض كامل وتتقاسمه */
+  @media (max-width: 560px) {
+    #list-tabs { display: flex; width: 100%; }
+    #list-tabs .tab { flex: 1 1 0; min-width: 0; padding: 9px 4px; font-size: 12.5px; }
+    #list-tabs .count { margin-right: 3px; min-width: 18px; padding: 0 4px; }
+    #list-tabs .lb-l { display: none; }
+  }
+  @media (min-width: 561px) { #list-tabs .lb-s { display: none; } }
   .tabs .count { display: inline-block; min-width: 20px; padding: 0 6px; margin-right: 6px; border-radius: 99px; font-size: 12px; background: var(--surface-3); color: var(--text); }
   .tab.active .count { background: #000; color: #fff; }
   .item { display: flex; justify-content: space-between; align-items: center; gap: 12px; width: 100%; text-align: right; font: inherit; color: var(--text);
@@ -274,6 +282,14 @@
   .empty { text-align: center; color: var(--muted); padding: 34px 0 10px; }
   .rv-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; flex-wrap: wrap; margin-bottom: 16px; }
   .rv-head h2 { margin: 0; }
+  /* الرجوع مثل نماذج الأعضاء: سهم خفيف فوق + زر "رجوع" تحت */
+  .top-nav { margin: -6px 0 10px; }
+  .back-top {
+    display: inline-grid; place-items: center; width: 32px; height: 32px; padding: 0; cursor: pointer; flex: none;
+    color: var(--muted); background: transparent; border: 1px solid transparent; border-radius: 999px; transition: .15s;
+  }
+  .back-top svg { width: 18px; height: 18px; }
+  .back-top:hover { color: var(--text); border-color: var(--border); }
   .rv-meta { font-size: 13px; color: var(--muted); margin-top: 4px; line-height: 1.7; }
   .links a { display: inline-block; color: var(--green); font-size: 14px; font-weight: 600; margin: 4px 0 0 14px; padding: 6px 12px; border-radius: 10px; background: var(--green-soft); text-decoration: none; }
   .links a:hover { text-decoration: underline; }
@@ -302,6 +318,38 @@
   .rq.err { border-color: var(--danger); }
   .toast { position: fixed; bottom: 18px; left: 50%; transform: translateX(-50%); z-index: 9; padding: 10px 18px; border-radius: 12px; background: var(--green); color: #000; font-weight: 600; font-size: 14px; display: none; }
   .toast.show { display: block; }
+  /* ─── تسجيل أعمال القائد ─── */
+  .kind.lead { background: rgba(255,201,77,.16); color: #ffd98a; }
+  /* بطاقات القوائم: النوع والحالة فوق، العنوان تحته كامل، والتواريخ سطور صغيرة */
+  .item, .mine { display: block; }
+  .c-top { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-bottom: 8px; }
+  .c-top .pills { display: flex; flex-wrap: wrap; gap: 6px; min-width: 0; }
+  .c-top .kind { margin: 0; white-space: nowrap; }
+  .c-top .badge, .c-top .go { flex: none; }
+  .c-top .badge { font-size: 11.5px; padding: 2px 10px; } /* نفس حجم شارة النوع */
+  .item b, .mine b { line-height: 1.5; }
+  .log-kinds .opt { display: flex !important; flex-direction: column; align-items: flex-start; gap: 4px; padding: 14px 16px; }
+  .log-kinds .opt span { font-size: 12.5px; }
+  .new-log { width: 100%; margin-bottom: 14px; }
+  .mine { display: block; padding: 14px 16px; margin-bottom: 10px; border-radius: 16px; background: var(--surface-2); border: 1px solid var(--border); }
+  .mine b { display: block; font-size: 15px; font-weight: 600; margin-bottom: 3px; }
+  .mine .meta { font-size: 12.5px; color: var(--muted); line-height: 1.6; }
+  .mine .why { margin-top: 6px; font-size: 13px; color: #ffb3b3; }
+  .file-input { width: 100%; font: inherit; font-size: 14px; color: var(--muted); padding: 10px; border-radius: 12px; border: 1px dashed var(--border-strong); background: var(--surface-2); }
+  .file-input::file-selector-button { font: inherit; margin-left: 10px; padding: 6px 12px; border-radius: 8px; border: 0; background: var(--surface-3); color: var(--text); cursor: pointer; }
+  .field.err select, .field.err .file-input { border-color: var(--danger); }
+  .check-line { display: flex; align-items: center; gap: 8px; margin: -4px 0 16px; font-size: 14px; color: var(--muted); cursor: pointer; width: fit-content; }
+  .check-line input { width: 18px; height: 18px; margin: 0; accent-color: var(--green); cursor: pointer; }
+  .field .sub { color: var(--muted); font-size: 12.5px; margin: 6px 0; }
+  .field select { text-overflow: ellipsis; }
+  /* الرئاسة: عرض فقط */
+  .view-filter { margin: -4px 0 14px; }
+  .view-filter select { width: 100%; font: inherit; font-size: 14px; color: var(--text); background: var(--surface-2); border: 1px solid var(--border); border-radius: 12px; padding: 10px 12px; color-scheme: dark; }
+  .ro-info { font-size: 13px; color: var(--muted); line-height: 1.8; }
+  .ro-info .why { color: #ffb3b3; }
+  .ro-info .gold { color: #ffd98a; }
+  .ro .stars button { cursor: default; }
+  .ro input:disabled, .ro textarea:disabled { opacity: 1; color: var(--text); -webkit-text-fill-color: var(--text); }
 </style>
 </head>
 <body>
@@ -319,8 +367,8 @@
   </header>
 
   <section class="hero">
-    <h1>مراجعة <em>أعمال الأعضاء</em></h1>
-    <p>اعتماد وتقييم المهام والمشاركات اللي سجّلها الأعضاء.</p>
+    <h1>بوابة <em>القادة</em></h1>
+    <p>مراجعة وتقييم أعمال الأعضاء، وتسجيل أعمالك ومشاركاتك.</p>
   </section>
 
   <!-- تحميل -->
@@ -332,7 +380,7 @@
   <main class="card login hidden" id="view-login">
     <div class="step show">
       <h2>تسجيل الدخول</h2>
-      <p class="sub">رمز الدخول الخاص بالقسم</p>
+      <p class="sub">رمز الدخول الخاص فيك</p>
       <form id="login-form" novalidate>
         <div class="field"><input id="f-code" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="رمز الدخول"></div>
         <div class="alert" id="login-alert"></div>
@@ -344,37 +392,52 @@
   <!-- القائمة والمراجعة -->
   <div id="view-app" class="hidden">
     <div class="whoami">
-      <div><span class="dot"></span><b id="who-dept"></b> <span id="who-extra" style="color:var(--muted)"></span></div>
+      <div><span class="dot"></span><b id="who-name"></b> · <span id="who-title"></span></div>
       <button class="linkbtn" id="logout" type="button">تسجيل خروج</button>
     </div>
 
     <div class="tabs" role="tablist" id="list-tabs">
-      <button class="tab active" data-list="pending" type="button">بانتظار المراجعة <span class="count" id="c-pending">0</span></button>
-      <button class="tab" data-list="done" type="button">تمت مراجعتها <span class="count" id="c-done">0</span></button>
+      <button class="tab active" data-list="pending" type="button"><span class="lb-l">بانتظار المراجعة</span><span class="lb-s">بانتظار</span> <span class="count" id="c-pending">0</span></button>
+      <button class="tab" data-list="done" type="button"><span class="lb-l">تمت مراجعتها</span><span class="lb-s">تمت</span> <span class="count" id="c-done">0</span></button>
+      <button class="tab" data-list="mine" type="button">أعمالي <span class="count" id="c-mine">0</span></button>
     </div>
 
     <main class="card" id="view-list">
       <div class="step show">
         <div class="alert" id="list-alert"></div>
+        <div class="view-filter hidden" id="view-filter"><select id="dept-filter" aria-label="القسم"></select></div>
         <div id="list"></div>
+      </div>
+    </main>
+
+    <main class="card hidden" id="view-register">
+      <div class="step show">
+        <div class="top-nav"><button type="button" class="back-top" id="rg-back-top" aria-label="رجوع" title="رجوع"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button></div>
+        <div class="rv-head"><div><h2 id="rg-title">تسجيل عمل أو مشاركة</h2></div></div>
+        <div class="grid log-kinds" id="rg-kinds"></div>
+        <form id="rg-form" class="hidden" novalidate>
+          <div id="rg-fields"></div>
+          <div class="alert" id="rg-alert"></div>
+          <div class="actions"><button type="button" class="btn btn-ghost" id="rg-back">→ رجوع</button><button type="submit" class="btn btn-primary" id="rg-save">إرسال</button></div>
+        </form>
       </div>
     </main>
 
     <main class="card hidden" id="view-review">
       <div class="step show">
+        <div class="top-nav"><button type="button" class="back-top" id="rv-back-top" aria-label="رجوع" title="رجوع"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button></div>
         <div class="rv-head">
           <div>
             <h2 id="rv-title"></h2>
             <div class="rv-meta" id="rv-meta"></div>
           </div>
-          <button class="btn btn-ghost" id="rv-back" type="button">→ رجوع</button>
         </div>
         <form id="rv-form" novalidate>
           <div id="rv-fields"></div>
           <div class="section-t"><span id="rv-members-t">الأعضاء</span><button class="linkbtn" id="approve-all" type="button">اعتماد الكل</button></div>
           <div id="rv-members"></div>
           <div class="alert" id="rv-alert"></div>
-          <div class="actions"><span></span><button type="submit" class="btn btn-primary" id="rv-save">حفظ المراجعة</button></div>
+          <div class="actions"><button type="button" class="btn btn-ghost" id="rv-back">→ رجوع</button><button type="submit" class="btn btn-primary" id="rv-save">حفظ المراجعة</button></div>
         </form>
       </div>
     </main>
@@ -390,7 +453,9 @@ const TASK_SIZES = ['صغيرة', 'متوسطة', 'كبيرة'];
 // الخانات اللي تنعرض للتعديل حسب النوع (المفاتيح لازم تطابق EDITABLE في Code.gs)
 const FIELD_LABELS = { title: 'العنوان', event: 'الفعالية', date: 'التاريخ', details: 'التفاصيل', size: 'حجم المهمة',
   activity: 'نوع النشاط', organizer: 'الجهة المنظمة', result: 'النتيجة', output: 'المخرج',
-  due: 'التسليم المطلوب', delivered: 'التسليم الفعلي', start: 'من' };
+  due: 'التسليم المطلوب', delivered: 'التسليم الفعلي', start: 'من', forWho: 'لصالح', impact: 'الأثر' };
+const INITIATIVE_FOR = ['القسم', 'الأعضاء', 'النادي'];
+const CHOICE_KEYS = { size: TASK_SIZES, forWho: INITIATIVE_FOR }; // تنعرض أزرار اختيار
 const DATE_KEYS = ['date', 'due', 'delivered', 'start'];
 const DATE_PAIRS = { due: 'delivered', start: 'date' }; // ينعرضون جنب بعض
 const FIELDS_BY_KIND = {
@@ -398,6 +463,10 @@ const FIELDS_BY_KIND = {
   'مهمة جماعية': ['title', 'due', 'delivered', 'date', 'size', 'event', 'details', 'output'],
   'مشاركة داخلية': ['title', 'start', 'date', 'details', 'output'],
   'مشاركة خارجية': ['activity', 'title', 'organizer', 'start', 'date', 'result', 'details', 'output'],
+  // تسجيلات القادة
+  'إشراف على مهمة أو مشروع': ['title', 'details', 'start', 'date', 'size', 'output'],
+  'مبادرة': ['title', 'details', 'forWho', 'impact', 'date', 'output'],
+  'مهمة مسندة': ['title', 'details', 'due', 'delivered', 'date', 'size', 'output'],
 };
 const STATUS_STYLE = {
   'بانتظار المراجعة': ['#ffe08a', 'rgba(255,200,60,.14)'],
@@ -432,14 +501,20 @@ function api(fn, arg) {
       google.script.run.withSuccessHandler(res).withFailureHandler(rej)[fn](arg));
   }
   if (API_URL) {
-    const body = fn === 'login' ? { action: 'login', code: arg } : fn === 'getQueue' ? { action: 'queue', code: arg } : { action: 'review', data: arg };
+    const body = fn === 'login' ? { action: 'login', code: arg } : fn === 'getQueue' ? { action: 'queue', code: arg }
+      : fn === 'getLeaderFormData' ? { action: 'formdata', code: arg } : fn === 'submitLeaderLog' ? { action: 'log', data: arg }
+      : { action: 'review', data: arg };
     return fetch(API_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(body) })
       .then(r => r.json(), () => { throw new Error('تعذّر الاتصال، تأكد من الإنترنت وحاول مرة ثانية.'); })
       .then(j => { if (!j.ok) throw new Error(j.error); return j.result; });
   }
   return new Promise((res, rej) => setTimeout(() => {
-    if (fn === 'login') return String(arg).trim() === 'x' ? rej(new Error('الرمز غير صحيح.')) : res({ dept: 'الإعلام والتسويق', isSupport: false, ratings: [] });
-    if (fn === 'getQueue') return res(JSON.parse(JSON.stringify(MOCK_Q)));
+    if (fn === 'login') return String(arg).trim() === 'x' ? rej(new Error('الرمز غير صحيح.')) : res({ name: 'نورة الغامدي', dept: 'الإعلام والتسويق', role: 'قائدة', title: 'قائدة قسم الإعلام والتسويق', isSupport: false, ratings: [] });
+    if (fn === 'getQueue') return res(Object.assign({ mine: [] }, JSON.parse(JSON.stringify(MOCK_Q))));
+    if (fn === 'getLeaderFormData') return res({ events: [{ title: 'Introduction To AI', type: 'ورشة', date: '2026/10/08' }], eventsError: false,
+      kinds: { supervise: 'إشراف على مهمة أو مشروع', initiative: 'مبادرة', assigned: 'مهمة مسندة', internal: 'مشاركة داخلية', external: 'مشاركة خارجية' },
+      sizes: TASK_SIZES, initiativeFor: INITIATIVE_FOR, activities: ['هاكاثون أو مسابقة', 'معرض أو فعالية جامعية', 'تطوع باسم النادي', 'أخرى'], results: ['مشاركة', 'تأهل', 'مركز أول', 'مركز ثاني', 'مركز ثالث', 'أخرى'], maxAgeDays: 30, maxFileMb: 10 });
+    if (fn === 'submitLeaderLog') return res({ id: 'LDR-7KQ', status: 'بانتظار المراجعة' });
     MOCK_Q.pending = MOCK_Q.pending.filter(x => x.id !== arg.id);
     res({ ok: true });
   }, 400));
@@ -463,21 +538,42 @@ function badge(status) {
 }
 function toast(msg) { const t = $('#toast'); t.textContent = msg; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 1800); }
 
-let ME = null, Q = { pending: [], done: [] }, LIST = 'pending', CUR = null;
+let ME = null, Q = { pending: [], done: [], mine: [] }, LIST = 'pending', CUR = null;
 let loadSeq = 0; // يتجاهل الردود القديمة لو انطلب التحميل أكثر من مرة
 
 // يفرّغ القائمة والأرقام (عند الدخول والخروج) عشان ما تطلع أرقام جلسة قديمة
 function resetList(counts) {
-  Q = { pending: [], done: [] };
+  Q = { pending: [], done: [], mine: [] };
   CUR = null;
   LIST = 'pending';
   $$('#list-tabs .tab').forEach(x => x.classList.toggle('active', x.dataset.list === 'pending'));
   $('#c-pending').textContent = counts;
   $('#c-done').textContent = counts;
+  $('#c-mine').textContent = counts;
   $('#list').innerHTML = '';
-  $('#view-review').classList.add('hidden');
-  $('#view-list').classList.remove('hidden');
+  showPanel('list');
 }
+// الرئاسة (عرض فقط): بدون "أعمالي"، وفلتر بالقسم
+const VIEW_GROUPS = ['العلاقات العامة', 'الإعلام والتسويق', 'التقني', 'الهاكاثونات', 'التخطيط والفعاليات', 'الدعم والتطوير', 'قادة المشاريع'];
+const LEADERS_GROUP = '__leaders';
+function setupViewMode() {
+  const ro = !!(ME && ME.readOnly);
+  $('#list-tabs .tab[data-list="mine"]').classList.toggle('hidden', ro);
+  $('#view-filter').classList.toggle('hidden', !ro);
+  const s = $('#dept-filter');
+  s.innerHTML = '';
+  if (!ro) return;
+  const add = (v, txt) => { const o = el('option', null, txt); o.value = v; s.appendChild(o); };
+  add('', 'كل الأقسام');
+  VIEW_GROUPS.forEach(d => add(d, d));
+  add(LEADERS_GROUP, 'تسجيلات القادة');
+}
+// القسم اللي يتبع له التسجيل: المهمة لصالح قسمها، والمشاركة قسم العضو
+function groupOf(it) {
+  if (it.isLeader) return LEADERS_GROUP;
+  return it.isTask ? it.forDept : (it.members[0] && it.members[0].dept) || '';
+}
+function showPanel(v) { ['list', 'review', 'register'].forEach(x => $('#view-' + x).classList.toggle('hidden', x !== v)); }
 
 function showView(v) { ['loading', 'login', 'app'].forEach(x => $('#view-' + x).classList.toggle('hidden', x !== v)); }
 
@@ -487,10 +583,13 @@ async function doLogin(code, silent) {
   try {
     ME = await api('login', code);
     store.set('code', code);
-    $('#who-dept').textContent = 'قسم ' + ME.dept;
-    $('#who-extra').textContent = ME.isSupport ? '· المهام + كل المشاركات' : '· المهام لصالح القسم';
+    $('#who-name').textContent = ME.name;
+    $('#who-title').textContent = ME.title;
+    setupViewMode();
     resetList('0');
     showView('app');
+    FD = null; FD_P = null;
+    loadFormData().catch(() => {}); // نموذج "تسجيل عمل" يكون جاهز لما يفتحه
     await loadQueue();
   } catch (err) {
     store.del('code');
@@ -529,15 +628,18 @@ async function loadQueue() {
     return;
   }
   if (seq !== loadSeq) return; // وصل رد أحدث
-  Q = res;
+  Q = Object.assign({ mine: [] }, res);
   $('#c-pending').textContent = Q.pending.length;
   $('#c-done').textContent = Q.done.length;
+  $('#c-mine').textContent = Q.mine.length;
   renderList();
 }
 function renderList() {
   const box = $('#list');
   box.innerHTML = '';
-  const items = Q[LIST];
+  if (LIST === 'mine') return renderMine(box);
+  const f = ME && ME.readOnly ? $('#dept-filter').value : '';
+  const items = Q[LIST].filter(it => !f || groupOf(it) === f);
   if (!items.length) {
     box.appendChild(el('div', 'empty', LIST === 'pending' ? 'ما فيه تسجيلات بانتظار المراجعة 🎉' : 'ما فيه مراجعات هذا الشهر.'));
     return;
@@ -545,27 +647,50 @@ function renderList() {
   items.forEach(it => {
     const b = el('button', 'item');
     b.type = 'button';
-    const info = el('div');
-    const t = el('b');
-    t.appendChild(el('span', 'kind' + (it.isTask ? '' : ' part'), it.kind));
-    t.appendChild(document.createTextNode(it.title));
-    info.appendChild(t);
-    const names = it.members.map(m => m.name).join('، ');
-    info.appendChild(el('div', 'meta', names));
-    info.appendChild(el('div', 'meta', (it.isTask ? 'تاريخ المهمة: ' : 'تاريخ المشاركة: ') + String(it.date).replace(/-/g, '/') + ' · رُفع: ' + it.registeredAt));
-    b.appendChild(info);
-    b.appendChild(el('span', 'go', LIST === 'pending' ? 'مراجعة ←' : 'تعديل ←'));
+    const top = el('div', 'c-top');
+    const pills = el('div', 'pills');
+    if (it.isLeader) pills.appendChild(el('span', 'kind lead', 'قائد'));
+    pills.appendChild(el('span', 'kind' + (it.isTask || it.isLeader ? '' : ' part'), it.kind));
+    top.append(pills, el('span', 'go', ME && ME.readOnly ? 'عرض ←' : LIST === 'pending' ? 'مراجعة ←' : 'تعديل ←'));
+    b.appendChild(top);
+    b.appendChild(el('b', null, it.title));
+    b.appendChild(el('div', 'meta', it.members.map(m => m.name).join('، ')));
+    b.appendChild(el('div', 'meta', 'التاريخ: ' + String(it.date).replace(/-/g, '/')));
+    b.appendChild(el('div', 'meta', 'رُفع: ' + it.registeredAt));
     b.addEventListener('click', () => openReview(it));
     box.appendChild(b);
   });
 }
+$('#dept-filter').addEventListener('change', renderList);
 $$('#list-tabs .tab').forEach(t => t.addEventListener('click', () => {
   LIST = t.dataset.list;
   $$('#list-tabs .tab').forEach(x => x.classList.toggle('active', x === t));
-  $('#view-review').classList.add('hidden');
-  $('#view-list').classList.remove('hidden');
+  showPanel('list');
   renderList();
 }));
+
+// ─── أعمالي (سجل القادة) ───
+function renderMine(box) {
+  const add = el('button', 'btn btn-primary new-log', '＋ تسجيل عمل أو مشاركة');
+  add.type = 'button';
+  add.id = 'new-log';
+  add.addEventListener('click', openRegister);
+  box.appendChild(add);
+  if (!Q.mine.length) { box.appendChild(el('div', 'empty', 'ما سجّلت أي عمل لسه.')); return; }
+  Q.mine.forEach(m => {
+    const row = el('div', 'mine');
+    const top = el('div', 'c-top');
+    const pills = el('div', 'pills');
+    pills.appendChild(el('span', 'kind', m.kind));
+    top.append(pills, badge(m.status));
+    row.appendChild(top);
+    row.appendChild(el('b', null, m.title));
+    row.appendChild(el('div', 'meta', m.id + ' · التاريخ: ' + String(m.date).replace(/-/g, '/')));
+    row.appendChild(el('div', 'meta', 'رُفع: ' + m.registeredAt));
+    if (m.reason) row.appendChild(el('div', 'why', 'سبب الرفض: ' + m.reason));
+    box.appendChild(row);
+  });
+}
 
 // ─── المراجعة ───
 // اسم مختصر للرابط بدل الرابط الطويل
@@ -583,8 +708,7 @@ function fieldBox(key, label, node) {
 function openReview(it) {
   CUR = JSON.parse(JSON.stringify(it));
   hideAlert('#rv-alert');
-  $('#view-list').classList.add('hidden');
-  $('#view-review').classList.remove('hidden');
+  showPanel('review');
   $('#rv-title').textContent = it.kind;
   $('#rv-meta').innerHTML = '';
   const meta = [it.id, 'سجّله: ' + it.registrant, 'رُفع: ' + it.registeredAt];
@@ -598,16 +722,17 @@ function openReview(it) {
   let pair = null; // صف التاريخين
   (FIELDS_BY_KIND[it.kind] || ['title', 'date', 'details']).forEach(k => {
     let node;
-    if (k === 'size') {
+    if (CHOICE_KEYS[k]) {
       node = el('div', 'seg');
-      TASK_SIZES.forEach(s => {
-        const b = el('button', s === it.size ? 'sel' : '', s);
+      node.dataset.key = k;
+      CHOICE_KEYS[k].forEach(s => {
+        const b = el('button', s === it[k] ? 'sel' : '', s);
         b.type = 'button';
-        b.addEventListener('click', () => { CUR.size = s; [...node.children].forEach(x => x.classList.toggle('sel', x === b)); });
+        b.addEventListener('click', () => { CUR[k] = s; [...node.children].forEach(x => x.classList.toggle('sel', x === b)); });
         node.appendChild(b);
       });
-    } else if (k === 'details') {
-      node = el('textarea'); node.value = it.details || ''; node.maxLength = 3000; node.style.minHeight = '90px';
+    } else if (k === 'details' || k === 'impact') {
+      node = el('textarea'); node.value = it[k] || ''; node.maxLength = k === 'details' ? 3000 : 1000; node.style.minHeight = '90px';
     } else if (k === 'output') {
       node = el('div');
       const links = el('div', 'links');
@@ -638,7 +763,8 @@ function openReview(it) {
       shown.append(input, el('span', 'date-ph', 'اختر التاريخ'));
       sync();
     }
-    const label = k === 'date' ? (it.isTask ? 'تاريخ الانتهاء' : 'إلى') : FIELD_LABELS[k];
+    const keys = FIELDS_BY_KIND[it.kind] || [];
+    const label = k === 'date' ? (keys.includes('due') ? 'تاريخ الانتهاء' : keys.includes('start') ? 'إلى' : 'التاريخ') : FIELD_LABELS[k];
     const fb = fieldBox(k, label, shown);
     if (DATE_PAIRS[k]) { pair = el('div', 'row2'); box.appendChild(pair); pair.appendChild(fb); }
     else if (pair && Object.values(DATE_PAIRS).includes(k)) { pair.appendChild(fb); pair = null; }
@@ -648,8 +774,11 @@ function openReview(it) {
   // الأعضاء
   const mb = $('#rv-members');
   mb.innerHTML = '';
-  $('#rv-members-t').textContent = it.members.length > 1 ? 'الأعضاء (' + it.members.length + ')' : 'العضو';
-  $('#approve-all').classList.toggle('hidden', it.members.filter(m => m.editable).length < 2);
+  $('#rv-members-t').textContent = it.isLeader ? 'القائد' : it.members.length > 1 ? 'الأعضاء (' + it.members.length + ')' : 'العضو';
+  const ro = !!(ME && ME.readOnly);
+  $('#view-review').classList.toggle('ro', ro);
+  $('#rv-save').classList.toggle('hidden', ro);
+  $('#approve-all').classList.toggle('hidden', ro || it.members.filter(m => m.editable).length < 2);
   CUR.members.forEach(m => {
     m.decision = m.status === 'معتمد' ? 'approve' : m.status === 'مرفوض' ? 'reject' : '';
     const c = el('div', 'mrev');
@@ -660,13 +789,14 @@ function openReview(it) {
     nm.appendChild(el('span', 'd', m.dept));
     top.append(nm, badge(m.status));
     c.appendChild(top);
+    if (ro) { c.appendChild(roInfo(it, m)); mb.appendChild(c); return; }
     if (!m.editable) {
-      c.appendChild(el('div', 'locked', m.status === 'مؤكد من الشهادات' ? 'تأكد من سجل الحضور، وما يحتاج مراجعة.' : 'المراجعة مقفلة (مرّ عليها الشهر).'));
+      c.appendChild(el('div', 'locked', m.status === 'مؤكد من الشهادات' ? 'تأكدنا من سجل الحضور، وما يحتاج مراجعة.' : 'المراجعة مقفلة (خلص شهرها).'));
       mb.appendChild(c);
       return;
     }
     const dec = el('div', 'decide');
-    [['approve', it.isTask ? 'اعتماد ✓' : 'تأكيد ✓'], ['reject', 'رفض ✗']].forEach(([v, t]) => {
+    [['approve', it.isTask || it.isLeader ? 'اعتماد ✓' : 'تأكيد ✓'], ['reject', 'رفض ✗']].forEach(([v, t]) => {
       const b = el('button', m.decision === v ? 'sel' : '', t);
       b.type = 'button'; b.dataset.v = v;
       b.addEventListener('click', () => { m.decision = v; syncMember(c, m); c.classList.remove('err'); });
@@ -703,7 +833,31 @@ function openReview(it) {
     syncMember(c, m);
     mb.appendChild(c);
   });
+  if (ro) { // الخانات تنعرض بس
+    $$('#rv-fields input, #rv-fields textarea').forEach(x => { x.disabled = true; });
+    $$('#rv-fields .seg button').forEach(x => { x.disabled = true; });
+    $$('#rv-fields .linkbtn').forEach(x => x.classList.add('hidden'));
+  }
   window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+// الرئاسة: تفاصيل المراجعة بدون أزرار
+function roInfo(it, m) {
+  const box = el('div', 'ro-info');
+  if (m.status === 'بانتظار المراجعة') box.appendChild(el('div', null, 'لسه ما أحد راجعه.'));
+  else if (m.reviewer) box.appendChild(el('div', null, 'راجعه: ' + m.reviewer + (m.reviewedAt ? ' · ' + m.reviewedAt : '')));
+  if (m.reason) box.appendChild(el('div', 'why', 'سبب الرفض: ' + m.reason));
+  if (m.star) box.appendChild(el('div', 'gold', '🏅 أداء مميز'));
+  if (it.isTask && m.status === 'معتمد') (ME.ratings || []).forEach(f => {
+    const n = +m[f.key] || 0;
+    if (!n) return;
+    const row = el('div', 'rq');
+    row.appendChild(el('span', null, f.q || f.label));
+    const stars = el('div', 'stars');
+    for (let i = 1; i <= 5; i++) { const s = el('button', i <= n ? 'on' : '', '★'); s.type = 'button'; s.disabled = true; stars.appendChild(s); }
+    row.appendChild(stars);
+    box.appendChild(row);
+  });
+  return box;
 }
 function syncMember(c, m) {
   [...c.querySelectorAll('.decide button')].forEach(b => b.classList.toggle('sel', b.dataset.v === m.decision));
@@ -719,7 +873,8 @@ $('#approve-all').addEventListener('click', () => {
     syncMember(c, m); c.classList.remove('err');
   });
 });
-$('#rv-back').addEventListener('click', () => { $('#view-review').classList.add('hidden'); $('#view-list').classList.remove('hidden'); });
+$('#rv-back').addEventListener('click', () => showPanel('list'));
+$('#rv-back-top').addEventListener('click', () => $('#rv-back').click());
 
 $('#rv-form').addEventListener('submit', async e => {
   e.preventDefault();
@@ -727,7 +882,7 @@ $('#rv-form').addEventListener('submit', async e => {
   $$('#rv-members .mrev.err, #rv-members .rq.err, #rv-fields .field.err').forEach(x => x.classList.remove('err'));
   const fields = {};
   $$('#rv-fields [data-k]').forEach(n => { fields[n.dataset.k] = n.value.trim(); });
-  if ('size' in CUR) fields.size = CUR.size;
+  Object.keys(CHOICE_KEYS).forEach(k => { if ((FIELDS_BY_KIND[CUR.kind] || []).includes(k)) fields[k] = CUR[k] || ''; });
   if (!fields.title) { $('#rv-fields .field[data-f="title"]').classList.add('err'); showAlert('#rv-alert', 'العنوان ما يكون فاضي.'); return; }
   const members = [];
   let bad = null;
@@ -756,10 +911,9 @@ $('#rv-form').addEventListener('submit', async e => {
   btn.disabled = true;
   btn.innerHTML = '<span class="spin"></span> جاري الحفظ…';
   try {
-    await api('saveReview', { code: store.get('code', ''), id: CUR.id, fields, members });
+    await api('saveReview', { code: store.get('code', ''), source: CUR.source || 'members', id: CUR.id, fields, members });
     toast('تم حفظ المراجعة ✓');
-    $('#view-review').classList.add('hidden');
-    $('#view-list').classList.remove('hidden');
+    showPanel('list');
     await loadQueue();
   } catch (err) {
     if (authFailed(err)) return;
@@ -767,6 +921,319 @@ $('#rv-form').addEventListener('submit', async e => {
   } finally {
     btn.disabled = false;
     btn.textContent = 'حفظ المراجعة';
+  }
+});
+
+
+// ═══════════════ تسجيل عمل أو مشاركة (سجل القادة) ═══════════════
+const LEADER_HINTS = {
+  supervise: 'متابعة تنفيذ مهمة أو مشروع لفريق',
+  initiative: 'عمل منك بدون ما أحد يسنده لك',
+  assigned: 'مهمة أسندها لك أحد',
+  internal: 'حضور فعالية للنادي',
+  external: 'فعالية برا النادي',
+};
+const LEADER_KINDS_UI = { // نفس LEADER_KINDS في Code.gs (تنعرض على طول بدون انتظار)
+  supervise: 'إشراف على مهمة أو مشروع', initiative: 'مبادرة', assigned: 'مهمة مسندة', internal: 'مشاركة داخلية', external: 'مشاركة خارجية',
+};
+const EVENT_OTHER = '__other';
+let FD = null, FD_P = null, RG = { kind: '', vals: {} };
+// بيانات النموذج (الفعاليات والاختيارات) تنجاب في الخلفية من أول ما يدخل القائد
+function loadFormData() {
+  if (!FD_P) FD_P = api('getLeaderFormData', store.get('code', '')).then(d => { FD = d; return d; }, err => { FD_P = null; throw err; });
+  return FD_P;
+}
+
+function dayStr(offset) {
+  const d = new Date(Date.now() + (offset || 0) * 86400000);
+  return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+}
+async function openRegister() {
+  showPanel('register');
+  hideAlert('#rg-alert');
+  RG = { kind: '', vals: {} };
+  $('#rg-title').textContent = 'تسجيل عمل أو مشاركة';
+  $('#rg-form').classList.add('hidden');
+  const grid = $('#rg-kinds');
+  grid.classList.remove('hidden');
+  grid.innerHTML = '';
+  loadFormData().catch(() => {}); // لو ما انجابت لسه
+  Object.keys(LEADER_KINDS_UI).forEach(k => {
+    const b = el('button', 'opt');
+    b.type = 'button';
+    b.dataset.id = k;
+    b.appendChild(el('b', null, LEADER_KINDS_UI[k]));
+    b.appendChild(el('span', null, LEADER_HINTS[k] || ''));
+    b.addEventListener('click', () => buildRegister(k));
+    grid.appendChild(b);
+  });
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+$('#rg-back-top').addEventListener('click', () => $('#rg-back').click());
+$('#rg-back').addEventListener('click', () => {
+  if (RG.kind) { openRegister(); return; } // من الخانات يرجع لاختيار النوع
+  showPanel('list');
+});
+
+// أدوات الخانات
+function rgField(key, label, optional) {
+  const w = el('div', 'field');
+  w.dataset.f = key;
+  const l = el('label', null, label);
+  l.htmlFor = 'g-' + key;
+  if (optional) { l.appendChild(document.createTextNode(' ')); l.appendChild(el('span', 'opt-l', '(اختياري)')); }
+  w.appendChild(l);
+  w.addEventListener('input', () => w.classList.remove('err'));
+  w.addEventListener('change', () => w.classList.remove('err'));
+  return w;
+}
+function rgInput(key, label, opts) {
+  opts = opts || {};
+  const w = rgField(key, label, opts.optional);
+  const i = el(opts.area ? 'textarea' : 'input');
+  i.id = 'g-' + key;
+  i.maxLength = opts.max || 150;
+  if (opts.type) i.type = opts.type;
+  if (opts.type === 'url') i.dir = 'ltr';
+  if (opts.placeholder) i.placeholder = opts.placeholder;
+  if (opts.type === 'date') {
+    i.max = opts.max !== undefined ? opts.max : dayStr(0);
+    i.min = opts.min !== undefined ? opts.min : dayStr(-(FD.maxAgeDays || 30));
+    const box = el('div', 'date-box blank');
+    const sync = () => box.classList.toggle('blank', !i.value);
+    i.addEventListener('input', sync);
+    i.addEventListener('change', sync);
+    box.append(i, el('span', 'date-ph', 'اختر التاريخ'));
+    w.appendChild(box);
+    return w;
+  }
+  w.appendChild(i);
+  return w;
+}
+function rgSeg(key, label, options) {
+  const w = rgField(key, label);
+  const seg = el('div', 'seg');
+  seg.dataset.key = key;
+  options.forEach(o => {
+    const b = el('button', null, o);
+    b.type = 'button';
+    b.dataset.v = o;
+    b.addEventListener('click', () => {
+      RG.vals[key] = o;
+      [...seg.children].forEach(x => x.classList.toggle('sel', x === b));
+      w.classList.remove('err');
+      const other = $('#g-' + key + 'Other');
+      if (other) other.classList.toggle('hidden', o !== 'أخرى');
+    });
+    seg.appendChild(b);
+  });
+  w.appendChild(seg);
+  if (options.includes('أخرى')) {
+    const o = el('input', 'hidden');
+    o.id = 'g-' + key + 'Other';
+    o.maxLength = 100;
+    o.placeholder = 'اكتب ' + label;
+    o.style.marginTop = '8px';
+    w.appendChild(o);
+  }
+  return w;
+}
+function rgSetDate(key, v) {
+  const i = $('#g-' + key);
+  if (!i) return;
+  i.value = v;
+  i.dispatchEvent(new Event('change', { bubbles: true }));
+}
+// من / إلى، و"إلى" تمشي مع "من" لين يغيّرها
+function rgRange() {
+  const r = el('div', 'row2');
+  const a = rgInput('start', 'من', { type: 'date', min: '' });
+  const b = rgInput('date', 'إلى', { type: 'date' });
+  r.append(a, b);
+  const si = a.querySelector('input'), ei = b.querySelector('input');
+  let prev = '';
+  const follow = () => {
+    if (si.value === prev) return;
+    if (!ei.value || ei.value === prev) { ei.value = si.value; ei.dispatchEvent(new Event('change', { bubbles: true })); }
+    prev = si.value;
+  };
+  si.addEventListener('input', follow);
+  si.addEventListener('change', follow);
+  return r;
+}
+function rgEvent() {
+  const w = rgField('event', 'الفعالية');
+  const s = el('select');
+  s.id = 'g-event';
+  const add = (v, t) => { const o = el('option', null, t); o.value = v; s.appendChild(o); };
+  add('', 'اختر الفعالية');
+  FD.events.forEach(ev => add(ev.title, ev.title));
+  add(EVENT_OTHER, 'فعالية غير موجودة في القائمة ✏️');
+  w.appendChild(s);
+  const other = el('input', 'hidden');
+  other.id = 'g-eventOther';
+  other.maxLength = 200;
+  other.placeholder = 'اسم الفعالية';
+  other.style.marginTop = '8px';
+  w.appendChild(other);
+  s.addEventListener('change', () => {
+    other.classList.toggle('hidden', s.value !== EVENT_OTHER);
+    const ev = FD.events.find(x => x.title === s.value);
+    const d = ev ? String(ev.date || '').replace(/\//g, '-') : '';
+    if (/^\d{4}-\d{2}-\d{2}$/.test(d)) rgSetDate('start', d);
+  });
+  if (FD.eventsError) w.appendChild(el('div', 'sub', 'تعذّر جلب قائمة الفعاليات، تقدر تكتب اسمها بنفسك.'));
+  return w;
+}
+function rgOutput(label) {
+  const w = rgField('output', label, true);
+  const f = el('input');
+  f.type = 'file';
+  f.id = 'g-file';
+  f.className = 'file-input';
+  w.appendChild(f);
+  w.appendChild(el('div', 'sub', 'ملف حتى ' + (FD.maxFileMb || 10) + ' ميغا، أو رابط (درايف، فيقما، قيت هب…)'));
+  const l = el('input');
+  l.type = 'url'; l.dir = 'ltr'; l.id = 'g-link'; l.maxLength = 500; l.placeholder = 'https://';
+  w.appendChild(l);
+  return w;
+}
+
+async function buildRegister(kind) {
+  RG = { kind, vals: {} };
+  hideAlert('#rg-alert');
+  $('#rg-title').textContent = LEADER_KINDS_UI[kind];
+  $('#rg-kinds').classList.add('hidden');
+  const box = $('#rg-fields');
+  box.innerHTML = '';
+  if (!FD) { // غالبًا جاهزة، ولو لا ننتظرها هنا بس
+    box.appendChild(el('div', 'empty', 'جاري التحميل…'));
+    $('#rg-form').classList.remove('hidden');
+    try { await loadFormData(); }
+    catch (err) {
+      if (authFailed(err)) return;
+      box.innerHTML = '';
+      showAlert('#rg-alert', (err && err.message) || 'تعذّر التحميل، حاول مرة ثانية.');
+      return;
+    }
+    if (RG.kind !== kind) return; // رجع أو اختار نوع ثاني
+    box.innerHTML = '';
+  }
+  if (kind === 'supervise') {
+    box.appendChild(rgInput('title', 'العنوان'));
+    box.appendChild(rgInput('details', 'وش أشرفت عليه', { area: true, max: 3000 }));
+    box.appendChild(rgRange());
+    box.appendChild(rgSeg('size', 'الحجم', FD.sizes));
+    box.appendChild(rgOutput('المخرج'));
+  } else if (kind === 'initiative') {
+    box.appendChild(rgInput('title', 'العنوان'));
+    box.appendChild(rgInput('details', 'التفاصيل', { area: true, max: 3000 }));
+    box.appendChild(rgSeg('forWho', 'لصالح', FD.initiativeFor));
+    box.appendChild(rgInput('impact', 'الأثر', { area: true, max: 1000 }));
+    box.appendChild(rgInput('date', 'التاريخ', { type: 'date' }));
+    box.appendChild(rgOutput('المخرج'));
+  } else if (kind === 'assigned') {
+    box.appendChild(rgInput('title', 'العنوان'));
+    box.appendChild(rgInput('details', 'التفاصيل', { area: true, max: 3000 }));
+    const r = el('div', 'row2');
+    r.append(rgInput('due', 'التسليم المطلوب', { type: 'date', min: '', max: '' }), rgInput('delivered', 'التسليم الفعلي', { type: 'date', min: '' }));
+    box.appendChild(r);
+    const cl = el('label', 'check-line');
+    const cb = el('input');
+    cb.type = 'checkbox';
+    cb.id = 'g-longer';
+    cl.append(cb, document.createTextNode('المهمة استمرت بعد التسليم'));
+    box.appendChild(cl);
+    const ew = rgInput('date', 'تاريخ الانتهاء', { type: 'date' });
+    ew.classList.add('hidden');
+    box.appendChild(ew);
+    cb.addEventListener('change', () => ew.classList.toggle('hidden', !cb.checked));
+    box.appendChild(rgSeg('size', 'الحجم', FD.sizes));
+    box.appendChild(rgOutput('المخرج'));
+  } else if (kind === 'internal') {
+    box.appendChild(rgEvent());
+    box.appendChild(rgRange());
+    box.appendChild(rgInput('details', 'ملاحظات', { area: true, max: 3000, optional: true }));
+    box.appendChild(rgOutput('المخرج'));
+  } else {
+    box.appendChild(rgSeg('activity', 'نوع النشاط', FD.activities));
+    box.appendChild(rgInput('title', 'اسم الفعالية'));
+    box.appendChild(rgInput('organizer', 'الجهة المنظمة'));
+    box.appendChild(rgRange());
+    box.appendChild(rgSeg('result', 'النتيجة', FD.results));
+    box.appendChild(rgInput('details', 'ملاحظات', { area: true, max: 3000, optional: true }));
+    box.appendChild(rgOutput('إثبات'));
+  }
+  $('#rg-form').classList.remove('hidden');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function readFile(f) {
+  return new Promise((res, rej) => {
+    const r = new FileReader();
+    r.onload = () => res({ name: f.name, type: f.type, b64: String(r.result).split(',')[1] || '' });
+    r.onerror = () => rej(new Error('تعذّر قراءة الملف.'));
+    r.readAsDataURL(f);
+  });
+}
+
+$('#rg-form').addEventListener('submit', async e => {
+  e.preventDefault();
+  hideAlert('#rg-alert');
+  $$('#rg-fields .field.err').forEach(x => x.classList.remove('err'));
+  const k = RG.kind, v = RG.vals;
+  const val = id => { const x = $('#g-' + id); return x && !x.closest('.hidden') ? x.value.trim() : ''; };
+  const bad = [];
+  const need = (key, ok) => { if (!ok) bad.push($('#rg-fields .field[data-f="' + key + '"]')); };
+  const longer = !!($('#g-longer') && $('#g-longer').checked);
+  if (k === 'supervise' || k === 'initiative' || k === 'assigned') { need('title', val('title')); need('details', val('details')); }
+  if (k === 'supervise') { need('start', val('start')); need('date', val('date')); need('size', v.size); }
+  if (k === 'initiative') { need('forWho', v.forWho); need('impact', val('impact')); need('date', val('date')); }
+  if (k === 'assigned') { need('due', val('due')); need('delivered', val('delivered')); need('size', v.size); if (longer) need('date', val('date')); }
+  if (k === 'internal') { const ev = $('#g-event').value; need('event', ev && (ev !== EVENT_OTHER || val('eventOther'))); need('start', val('start')); need('date', val('date')); }
+  if (k === 'external') {
+    need('activity', v.activity && (v.activity !== 'أخرى' || val('activityOther')));
+    need('title', val('title')); need('organizer', val('organizer')); need('start', val('start')); need('date', val('date'));
+    need('result', v.result && (v.result !== 'أخرى' || val('resultOther')));
+  }
+  const link = val('link');
+  if (link && !/^(https?:\/\/)?[^\s.]+\.\S+$/i.test(link)) need('output', false);
+  const f = $('#g-file');
+  if (f && f.files[0] && f.files[0].size > (FD.maxFileMb || 10) * 1024 * 1024) {
+    need('output', false);
+    showAlert('#rg-alert', 'حجم الملف أكبر من ' + (FD.maxFileMb || 10) + ' ميغا. ارفعه على درايف وحط الرابط.');
+  }
+  if (bad.length) {
+    bad.forEach(x => x && x.classList.add('err'));
+    if (!$('#rg-alert').classList.contains('show')) showAlert('#rg-alert', 'يرجى تعبئة الحقول المطلوبة.');
+    if (bad[0]) bad[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+    return;
+  }
+  const data = { code: store.get('code', ''), kind: k, title: val('title'), details: val('details'), impact: val('impact'),
+    result: k === 'external' ? v.result : val('result'), resultOther: val('resultOther'), forWho: v.forWho || '', size: v.size || '',
+    start: val('start'), date: k === 'assigned' && !longer ? '' : val('date'), due: val('due'), delivered: val('delivered'),
+    activity: v.activity || '', activityOther: val('activityOther'), organizer: val('organizer') };
+  const ev = $('#g-event');
+  if (ev) { if (ev.value === EVENT_OTHER) data.eventOther = val('eventOther'); else data.event = ev.value; }
+  data.link = link && !/^https?:\/\//i.test(link) ? 'https://' + link : link;
+  const btn = $('#rg-save');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spin"></span> جاري الإرسال…';
+  try {
+    if (f && f.files[0]) data.file = await readFile(f.files[0]);
+    const res = await api('submitLeaderLog', data);
+    toast(res.status === 'مؤكد من الشهادات' ? 'تم التسجيل، وتأكدنا من سجل الحضور ✓' : 'تم التسجيل ✓');
+    RG = { kind: '', vals: {} };
+    LIST = 'mine';
+    $$('#list-tabs .tab').forEach(x => x.classList.toggle('active', x.dataset.list === 'mine'));
+    showPanel('list');
+    await loadQueue();
+  } catch (err) {
+    if (authFailed(err)) return;
+    showAlert('#rg-alert', (err && err.message) || 'صار خطأ أثناء الإرسال، حاول مرة ثانية.');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'إرسال';
   }
 });
 
