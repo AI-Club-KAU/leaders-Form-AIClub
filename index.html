@@ -256,7 +256,7 @@
   .login .btn { width: 100%; }
   .whoami { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap;
     margin: 22px 0 14px; padding: 10px 16px; border-radius: 14px; background: var(--surface-2); border: 1px solid var(--border); font-size: 14px; }
-  .whoami b { font-weight: 600; }
+  .whoami b { font-weight: 600; color: #b9f5ad; } /* الاسم بالأخضر مثل نماذج الأعضاء */
   .whoami .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--green); margin-left: 8px; }
   .linkbtn { font: inherit; font-size: 13px; color: var(--muted); background: none; border: 0; cursor: pointer; text-decoration: underline; }
   .linkbtn:hover { color: var(--text); }
@@ -343,6 +343,24 @@
   .check-line input { width: 18px; height: 18px; margin: 0; accent-color: var(--green); cursor: pointer; }
   .field .sub { color: var(--muted); font-size: 12.5px; margin: 6px 0; }
   .field select { text-overflow: ellipsis; }
+  /* الصفحة الأولى: بوكسات النماذج مثل نماذج الأعضاء */
+  .opt.disabled { opacity: .45; cursor: not-allowed; transform: none; }
+  .opt.disabled:hover { transform: none; border-color: var(--border); background: var(--surface-2); }
+  #view-list #list-tabs { margin: 0 0 18px; }
+  /* ─── إدارة الموارد ─── */
+  #view-res #res-tabs { margin: 0 0 18px; }
+  .res-actions { display: flex; gap: 16px; margin-top: 8px; }
+  .mine .note-edit { margin-top: 6px; font-size: 13px; color: #ffe08a; }
+  .files-keep { display: grid; gap: 6px; margin-bottom: 10px; }
+  .files-keep label { display: flex; align-items: center; gap: 8px; font-size: 14px; padding: 8px 12px; border-radius: 10px; background: var(--surface-2); border: 1px solid var(--border); cursor: pointer; }
+  .files-keep input { width: 18px; height: 18px; margin: 0; accent-color: var(--green); }
+  .files-keep a { color: var(--green); font-size: 12.5px; margin-right: auto; }
+  .rr-row { display: grid; grid-template-columns: 120px 1fr; gap: 10px; padding: 9px 0; border-bottom: 1px solid var(--border); font-size: 14px; }
+  .rr-row b { color: var(--muted); font-weight: 500; }
+  .rr-row .txt { white-space: pre-wrap; overflow-wrap: anywhere; }
+  .rr-row .old { color: var(--muted); text-decoration: line-through; display: block; }
+  .rr-sec { font-size: 15px; font-weight: 600; margin: 20px 0 6px; color: #ffe08a; }
+  @media (max-width: 480px) { .rr-row { grid-template-columns: 1fr; gap: 2px; } }
   /* الرئاسة: عرض فقط */
   .view-filter { margin: -4px 0 14px; }
   .view-filter select { width: 100%; font: inherit; font-size: 14px; color: var(--text); background: var(--surface-2); border: 1px solid var(--border); border-radius: 12px; padding: 10px 12px; color-scheme: dark; }
@@ -397,17 +415,64 @@
       <button class="linkbtn" id="logout" type="button">تسجيل خروج</button>
     </div>
 
-    <div class="tabs" role="tablist" id="list-tabs">
-      <button class="tab active" data-list="pending" type="button"><span class="lb-l">بانتظار المراجعة</span><span class="lb-s">بانتظار</span> <span class="count" id="c-pending">0</span></button>
-      <button class="tab" data-list="done" type="button"><span class="lb-l">تمت مراجعتها</span><span class="lb-s">تمت</span> <span class="count" id="c-done">0</span></button>
-      <button class="tab" data-list="mine" type="button">أعمالي <span class="count" id="c-mine">0</span></button>
-    </div>
-
-    <main class="card" id="view-list">
+    <main class="card" id="view-home">
       <div class="step show">
+        <h2>نوع النموذج</h2>
+        <div class="grid" id="home-grid"></div>
+      </div>
+    </main>
+
+    <main class="card hidden" id="view-list">
+      <div class="step show">
+        <div class="top-nav"><button type="button" class="back-top" id="list-back-top" aria-label="رجوع" title="رجوع"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button></div>
+        <div class="rv-head"><div><h2 id="list-title"></h2></div></div>
+        <div class="tabs" role="tablist" id="list-tabs">
+          <button class="tab active" data-list="pending" type="button"><span class="lb-l">بانتظار المراجعة</span><span class="lb-s">بانتظار</span> <span class="count" id="c-pending">0</span></button>
+          <button class="tab" data-list="done" type="button"><span class="lb-l">تمت مراجعتها</span><span class="lb-s">تمت</span> <span class="count" id="c-done">0</span></button>
+        </div>
         <div class="alert" id="list-alert"></div>
         <div class="view-filter hidden" id="view-filter"><select id="dept-filter" aria-label="القسم"></select></div>
         <div id="list"></div>
+      </div>
+    </main>
+
+    <main class="card hidden" id="view-res">
+      <div class="step show">
+        <div class="top-nav"><button type="button" class="back-top" id="res-back-top" aria-label="رجوع" title="رجوع"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button></div>
+        <div class="rv-head"><div><h2>إدارة الموارد</h2></div></div>
+        <div class="tabs hidden" role="tablist" id="res-tabs">
+          <button class="tab active" data-tab="mine" type="button">الموارد <span class="count" id="c-res">0</span></button>
+          <button class="tab" data-tab="queue" type="button">بانتظار الاعتماد <span class="count" id="c-res-q">0</span></button>
+        </div>
+        <div class="view-filter hidden" id="res-filter"><select id="res-dept-filter" aria-label="القسم"></select></div>
+        <div class="alert" id="res-alert"></div>
+        <div id="res-list"></div>
+      </div>
+    </main>
+
+    <main class="card hidden" id="view-res-form">
+      <div class="step show">
+        <div class="top-nav"><button type="button" class="back-top" id="rf-back-top" aria-label="رجوع" title="رجوع"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button></div>
+        <div class="rv-head"><div><h2 id="rf-title">إضافة مورد</h2><div class="rv-meta" id="rf-meta"></div></div></div>
+        <form id="rf-form" novalidate>
+          <div id="rf-fields"></div>
+          <div class="alert" id="rf-alert"></div>
+          <div class="actions"><button type="button" class="btn btn-ghost" id="rf-back">→ رجوع</button><button type="submit" class="btn btn-primary" id="rf-save">إرسال للاعتماد</button></div>
+        </form>
+      </div>
+    </main>
+
+    <main class="card hidden" id="view-res-review">
+      <div class="step show">
+        <div class="top-nav"><button type="button" class="back-top" id="rr-back-top" aria-label="رجوع" title="رجوع"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button></div>
+        <div class="rv-head"><div><h2 id="rr-title"></h2><div class="rv-meta" id="rr-meta"></div></div></div>
+        <div id="rr-body"></div>
+        <div id="rr-decide" class="mrev hidden" style="margin-top:20px">
+          <div class="decide"><button type="button" data-v="approve">اعتماد ✓</button><button type="button" data-v="reject">رفض ✗</button></div>
+          <div class="field reason hidden" data-f="rr-reason"><label for="rr-reason">سبب الرفض</label><textarea id="rr-reason" maxlength="1000"></textarea></div>
+        </div>
+        <div class="alert" id="rr-alert"></div>
+        <div class="actions"><button type="button" class="btn btn-ghost" id="rr-back">→ رجوع</button><button type="button" class="btn btn-primary hidden" id="rr-save">حفظ</button></div>
       </div>
     </main>
 
@@ -475,6 +540,7 @@ const STATUS_STYLE = {
   'مؤكد من الشهادات': ['#000', '#54d640'],
   'مؤكد تلقائيًا': ['#9fd0ff', 'rgba(80,160,255,.15)'],
   'مرفوض': ['#ffb3b3', 'rgba(255,107,107,.15)'],
+  'مخفي': ['#a3a3b2', 'rgba(255,255,255,.08)'],
 };
 
 // ─── الربط مع Apps Script (أو معاينة محلية لو فتحت الملف مباشرة) ───
@@ -496,6 +562,13 @@ const MOCK_Q = { pending: [
     members: [{ sid: '2210888', name: 'ريم خالد العتيبي', dept: 'الإعلام والتسويق', status: 'بانتظار المراجعة', reason: '', star: false, feedback: '', editable: true }] },
 ], done: [] };
 
+const MOCK_RES = { role: 'dept', dept: 'الإعلام والتسويق', depts: ['الإعلام والتسويق'], maxFileMb: 15, maxTotalMb: 30,
+  categories: [{ id: 'CAT-007', dept: 'الإعلام والتسويق', label: 'قوالب التصاميم', area: 'resources' }, { id: 'CAT-010', dept: 'الإعلام والتسويق', label: 'الأعمال السابقة', area: 'archive' }],
+  types: ['قوالب', 'شيتات', 'أدلة', 'نصوص جاهزة', 'هوية بصرية'],
+  items: [{ id: 'RES-001', title: 'شعارات النادي', description: 'كل نسخ الشعار', place: 'department', dept: 'الإعلام والتسويق', area: 'resources', categoryId: 'CAT-007',
+    categoryLabel: 'قوالب التصاميم', type: 'هوية بصرية', content: 'file', link: '', text: '', owner: '', year: '', files: [{ label: 'شعار أبيض', url: 'https://drive.google.com/file/d/x' }],
+    status: 'معتمد', addedBy: 'نورة الغامدي', addedAt: '2026-10-12', reason: '', edit: null, raw: {} }], queue: [] };
+
 function api(fn, arg) {
   if (IS_GAS) {
     return new Promise((res, rej) =>
@@ -504,18 +577,23 @@ function api(fn, arg) {
   if (API_URL) {
     const body = fn === 'login' ? { action: 'login', code: arg } : fn === 'getQueue' ? { action: 'queue', code: arg }
       : fn === 'getLeaderFormData' ? { action: 'formdata', code: arg } : fn === 'submitLeaderLog' ? { action: 'log', data: arg }
+      : fn === 'getResourceData' ? { action: 'resdata', code: arg } : fn === 'saveResource' ? { action: 'ressave', data: arg }
+      : fn === 'setResourceHidden' ? { action: 'reshide', data: arg } : fn === 'reviewResource' ? { action: 'resreview', data: arg }
       : { action: 'review', data: arg };
     return fetch(API_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(body) })
       .then(r => r.json(), () => { throw new Error('تعذّر الاتصال، تأكد من الإنترنت وحاول مرة ثانية.'); })
       .then(j => { if (!j.ok) throw new Error(j.error); return j.result; });
   }
   return new Promise((res, rej) => setTimeout(() => {
-    if (fn === 'login') return String(arg).trim() === 'x' ? rej(new Error('الرمز غير صحيح.')) : res({ name: 'نورة الغامدي', dept: 'الإعلام والتسويق', role: 'قائدة', title: 'قائدة قسم الإعلام والتسويق', isSupport: false, ratings: [] });
+    if (fn === 'login') return String(arg).trim() === 'x' ? rej(new Error('الرمز غير صحيح.')) : res({ name: 'نورة الغامدي', dept: 'الإعلام والتسويق', role: 'قائدة', title: 'قائدة قسم الإعلام والتسويق', isSupport: false, ratings: [], resRole: 'dept' });
     if (fn === 'getQueue') return res(Object.assign({ mine: [] }, JSON.parse(JSON.stringify(MOCK_Q))));
     if (fn === 'getLeaderFormData') return res({ events: [{ title: 'Introduction To AI', type: 'ورشة', date: '2026/10/08' }], eventsError: false,
       kinds: { supervise: 'إشراف على مهمة أو مشروع', initiative: 'مبادرة', assigned: 'مهمة مسندة', internal: 'مشاركة داخلية', external: 'مشاركة خارجية' },
       sizes: TASK_SIZES, initiativeFor: INITIATIVE_FOR, activities: ['هاكاثون أو مسابقة', 'معرض أو فعالية جامعية', 'تطوع باسم النادي', 'أخرى'], results: ['مشاركة', 'تأهل', 'مركز أول', 'مركز ثاني', 'مركز ثالث', 'أخرى'], maxAgeDays: 30, maxFileMb: 10 });
     if (fn === 'submitLeaderLog') return res({ id: 'LDR-7KQ', status: 'بانتظار المراجعة' });
+    if (fn === 'getResourceData') return res(MOCK_RES);
+    if (fn === 'saveResource') return res({ id: 'RES-009', status: 'بانتظار المراجعة', edit: !!arg.id });
+    if (fn === 'setResourceHidden' || fn === 'reviewResource') return res({ ok: true });
     MOCK_Q.pending = MOCK_Q.pending.filter(x => x.id !== arg.id);
     res({ ok: true });
   }, 400));
@@ -550,16 +628,14 @@ function resetList(counts) {
   $$('#list-tabs .tab').forEach(x => x.classList.toggle('active', x.dataset.list === 'pending'));
   $('#c-pending').textContent = counts;
   $('#c-done').textContent = counts;
-  $('#c-mine').textContent = counts;
   $('#list').innerHTML = '';
-  showPanel('list');
+  showPanel('home');
 }
 // الرئاسة (عرض فقط): بدون "أعمالي"، وفلتر بالقسم
 const VIEW_GROUPS = ['العلاقات العامة', 'الإعلام والتسويق', 'التقني', 'الهاكاثونات', 'التخطيط والفعاليات', 'الدعم والتطوير', 'قادة المشاريع'];
 const LEADERS_GROUP = '__leaders';
 function setupViewMode() {
   const ro = !!(ME && ME.readOnly);
-  $('#list-tabs .tab[data-list="mine"]').classList.toggle('hidden', ro);
   $('#view-filter').classList.toggle('hidden', !ro);
   const s = $('#dept-filter');
   s.innerHTML = '';
@@ -574,7 +650,54 @@ function groupOf(it) {
   if (it.isLeader) return LEADERS_GROUP;
   return it.isTask ? it.forDept : (it.members[0] && it.members[0].dept) || '';
 }
-function showPanel(v) { ['list', 'review', 'register'].forEach(x => $('#view-' + x).classList.toggle('hidden', x !== v)); }
+// ─── الصفحة الأولى: بوكس لكل نموذج (اللي ما يخص القائد ما يطلع له) ───
+const HOME_ICONS = {
+  review: '<path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1"/><path d="m9 14 2 2 4-4"/>',
+  log: '<path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/>',
+  resources: '<path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>',
+};
+function homeBoxes() {
+  const ro = !!(ME && ME.readOnly);
+  const boxes = [{ id: 'review', label: 'مراجعة وتقييم الأعضاء' }];
+  if (!ro) boxes.push({ id: 'log', label: 'تسجيل عمل أو مشاركة' });
+  if (ME && ME.resRole && ME.resRole !== 'none') boxes.push({ id: 'resources', label: 'إدارة الموارد' });
+  return boxes;
+}
+function pickBox(b, open) {
+  [...b.parentNode.children].forEach(o => o.classList.toggle('sel', o === b));
+  setTimeout(open, 220);
+}
+function renderHome() {
+  const g = $('#home-grid');
+  g.innerHTML = '';
+  homeBoxes().forEach(x => {
+    const b = el('button', 'opt');
+    b.type = 'button';
+    b.dataset.id = x.id;
+    b.innerHTML = '<div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' + HOME_ICONS[x.id] + '</svg></div>';
+    b.appendChild(el('b', null, x.label));
+    if (x.soon) { b.classList.add('disabled'); b.disabled = true; b.appendChild(el('span', null, 'قريبًا')); }
+    // يتلوّن بالأخضر لحظة (مثل نماذج الأعضاء) وبعدين يفتح
+    else b.addEventListener('click', () => pickBox(b, () => x.id === 'resources' ? openRes() : openList(x.id === 'log' ? 'mine' : 'review')));
+    g.appendChild(b);
+  });
+}
+// يفتح قسم المراجعة (بانتظار / تمت) أو "تسجيل عمل أو مشاركة" (أعمالي)
+function openList(which) {
+  const mine = which === 'mine';
+  if (mine) LIST = 'mine';
+  else if (LIST === 'mine') LIST = 'pending';
+  $('#list-title').textContent = mine ? 'تسجيل عمل أو مشاركة' : 'مراجعة وتقييم الأعضاء';
+  $('#list-tabs').classList.toggle('hidden', mine);
+  $$('#list-tabs .tab').forEach(x => x.classList.toggle('active', x.dataset.list === LIST));
+  $('#view-filter').classList.toggle('hidden', mine || !(ME && ME.readOnly));
+  hideAlert('#list-alert');
+  showPanel('list');
+  renderList();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+$('#list-back-top').addEventListener('click', () => showPanel('home'));
+function showPanel(v) { ['home', 'list', 'review', 'register', 'res', 'res-form', 'res-review'].forEach(x => $('#view-' + x).classList.toggle('hidden', x !== v)); }
 
 function showView(v) { ['loading', 'login', 'app'].forEach(x => $('#view-' + x).classList.toggle('hidden', x !== v)); }
 
@@ -587,6 +710,7 @@ async function doLogin(code, silent) {
     $('#who-name').textContent = ME.name;
     $('#who-title').textContent = ME.title;
     setupViewMode();
+    renderHome();
     resetList('0');
     showView('app');
     FD = null; FD_P = null;
@@ -632,7 +756,6 @@ async function loadQueue() {
   Q = Object.assign({ mine: [] }, res);
   $('#c-pending').textContent = Q.pending.length;
   $('#c-done').textContent = Q.done.length;
-  $('#c-mine').textContent = Q.mine.length;
   renderList();
 }
 function renderList() {
@@ -932,7 +1055,7 @@ const LEADER_HINTS = {
   initiative: 'عمل منك بدون ما أحد يسنده لك',
   assigned: 'مهمة أسندها لك أحد',
   internal: 'حضور فعالية للنادي',
-  external: 'فعالية برا النادي',
+  external: 'تمثيل النادي في فعالية خارجية',
 };
 const LEADER_KINDS_UI = { // نفس LEADER_KINDS في Code.gs (تنعرض على طول بدون انتظار)
   supervise: 'إشراف على مهمة أو مشروع', initiative: 'مبادرة', assigned: 'مهمة مسندة', internal: 'مشاركة داخلية', external: 'مشاركة خارجية',
@@ -965,7 +1088,7 @@ async function openRegister() {
     b.dataset.id = k;
     b.appendChild(el('b', null, LEADER_KINDS_UI[k]));
     b.appendChild(el('span', null, LEADER_HINTS[k] || ''));
-    b.addEventListener('click', () => buildRegister(k));
+    b.addEventListener('click', () => pickBox(b, () => buildRegister(k)));
     grid.appendChild(b);
   });
   window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -1225,9 +1348,7 @@ $('#rg-form').addEventListener('submit', async e => {
     const res = await api('submitLeaderLog', data);
     toast(res.status === 'مؤكد من الشهادات' ? 'تم التسجيل، وتأكدنا من سجل الحضور ✓' : 'تم التسجيل ✓');
     RG = { kind: '', vals: {} };
-    LIST = 'mine';
-    $$('#list-tabs .tab').forEach(x => x.classList.toggle('active', x.dataset.list === 'mine'));
-    showPanel('list');
+    openList('mine');
     await loadQueue();
   } catch (err) {
     if (authFailed(err)) return;
@@ -1235,6 +1356,403 @@ $('#rg-form').addEventListener('submit', async e => {
   } finally {
     btn.disabled = false;
     btn.textContent = 'إرسال';
+  }
+});
+
+// ═══════════════ إدارة الموارد (شيت المنصة الموحدة) ═══════════════
+const RES_PLACE_LABELS = { department: 'موارد قسمكم', shared: 'الموارد المشتركة', system: 'أنظمة النادي' };
+const RES_CONTENT_LABELS = { file: 'ملف', text: 'نص جاهز', link: 'رابط' };
+let RD = null, RES_TAB = 'mine', RF = null, RR = null;
+
+async function loadRes() {
+  hideAlert('#res-alert');
+  $('#res-list').innerHTML = '<div class="empty">جاري التحميل…</div>';
+  try { RD = await api('getResourceData', store.get('code', '')); }
+  catch (err) {
+    if (authFailed(err)) return;
+    $('#res-list').innerHTML = '';
+    showAlert('#res-alert', (err && err.message) || 'تعذّر جلب الموارد.');
+    return;
+  }
+  const support = RD.role === 'support';
+  $('#res-tabs').classList.toggle('hidden', !support);
+  $('#c-res').textContent = RD.items.length;
+  $('#c-res-q').textContent = RD.queue.length;
+  if (!support) RES_TAB = 'mine';
+  $$('#res-tabs .tab').forEach(x => x.classList.toggle('active', x.dataset.tab === RES_TAB));
+  const f = $('#res-dept-filter');
+  $('#res-filter').classList.toggle('hidden', RD.role !== 'view');
+  if (RD.role === 'view' && !f.options.length) {
+    const add = (v, txt) => { const o = el('option', null, txt); o.value = v; f.appendChild(o); };
+    add('', 'كل الأقسام');
+    RD.depts.forEach(d => add(d, d));
+    add('__shared', 'الموارد المشتركة');
+    add('__system', 'أنظمة النادي');
+  }
+  renderRes();
+}
+function openRes() {
+  showPanel('res');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  return loadRes();
+}
+$('#res-back-top').addEventListener('click', () => showPanel('home'));
+$$('#res-tabs .tab').forEach(t => t.addEventListener('click', () => {
+  RES_TAB = t.dataset.tab;
+  $$('#res-tabs .tab').forEach(x => x.classList.toggle('active', x === t));
+  renderRes();
+}));
+$('#res-dept-filter').addEventListener('change', () => renderRes());
+
+// وين المورد: "موارد · قوالب التصاميم"، "أرشيف · ..."، "الموارد المشتركة"…
+function resWhere(it) {
+  if (it.place === 'shared') return 'الموارد المشتركة';
+  if (it.place === 'system') return 'أنظمة النادي';
+  return (it.area === 'archive' ? 'أرشيف' : 'موارد') + (RD && RD.role !== 'dept' ? ' · ' + it.dept : '');
+}
+function canEditRes(it) {
+  if (!RD) return false;
+  if (RD.role === 'support') return true;
+  return RD.role === 'dept' && it.place === 'department' && it.dept === RD.dept;
+}
+function renderRes() {
+  const box = $('#res-list');
+  box.innerHTML = '';
+  if (!RD) return;
+  const manage = RD.role === 'dept' || RD.role === 'support';
+  if (manage && RES_TAB === 'mine') {
+    const add = el('button', 'btn btn-primary new-log', '＋ إضافة مورد');
+    add.type = 'button';
+    add.id = 'res-new';
+    add.addEventListener('click', () => openResForm(null));
+    box.appendChild(add);
+  }
+  let items = RES_TAB === 'queue' ? RD.queue : RD.items;
+  const f = RD.role === 'view' ? $('#res-dept-filter').value : '';
+  if (f) items = items.filter(it => f === '__shared' ? it.place === 'shared' : f === '__system' ? it.place === 'system' : it.place === 'department' && it.dept === f);
+  if (!items.length) {
+    box.appendChild(el('div', 'empty', RES_TAB === 'queue' ? 'ما فيه موارد تنتظر الاعتماد 🎉' : 'ما فيه موارد لسه.'));
+    return;
+  }
+  items.forEach(it => {
+    const row = el(RES_TAB === 'queue' || RD.role === 'view' ? 'button' : 'div', RES_TAB === 'queue' || RD.role === 'view' ? 'item' : 'mine');
+    if (row.tagName === 'BUTTON') { row.type = 'button'; row.addEventListener('click', () => openResReview(it)); }
+    const top = el('div', 'c-top');
+    const pills = el('div', 'pills');
+    pills.appendChild(el('span', 'kind' + (it.area === 'archive' ? ' part' : ''), resWhere(it)));
+    if (it.categoryLabel) pills.appendChild(el('span', 'kind', it.categoryLabel));
+    const isEdit = RES_TAB === 'queue' && it.status === 'معتمد' && it.edit && it.edit.status === 'بانتظار المراجعة';
+    top.append(pills, RES_TAB === 'queue' ? el('span', 'go', (isEdit ? 'تعديل' : 'جديد') + ' ←') : badge(it.status));
+    row.appendChild(top);
+    row.appendChild(el('b', null, it.title));
+    row.appendChild(el('div', 'meta', [it.type, RES_CONTENT_LABELS[it.content]].filter(Boolean).join(' · ')));
+    row.appendChild(el('div', 'meta', 'أضافه: ' + it.addedBy + (it.addedAt ? ' · ' + String(it.addedAt).replace(/-/g, '/') : '')));
+    if (RES_TAB === 'mine') {
+      if (it.edit && it.edit.status === 'بانتظار المراجعة') row.appendChild(el('div', 'note-edit', '✏️ فيه تعديل بانتظار الاعتماد، والنسخة الحالية تظل منشورة.'));
+      else if (it.edit && it.edit.status === 'مرفوض') row.appendChild(el('div', 'why', 'تعديلك الأخير انرفض: ' + it.edit.reason));
+      if (it.status === 'مرفوض' && it.reason) row.appendChild(el('div', 'why', 'سبب الرفض: ' + it.reason));
+      if (canEditRes(it)) {
+        const acts = el('div', 'res-actions');
+        const e = el('button', 'linkbtn', 'تعديل');
+        e.type = 'button';
+        e.addEventListener('click', () => openResForm(it));
+        const hdn = it.status === 'مخفي';
+        const hb = el('button', 'linkbtn', hdn ? 'إرجاع للمنصة' : 'إخفاء من المنصة');
+        hb.type = 'button';
+        hb.addEventListener('click', () => toggleResHidden(it, !hdn, hb));
+        acts.append(e, hb);
+        row.appendChild(acts);
+      }
+    }
+    box.appendChild(row);
+  });
+}
+async function toggleResHidden(it, hidden, btn) {
+  btn.disabled = true;
+  try {
+    await api('setResourceHidden', { code: store.get('code', ''), id: it.id, hidden: hidden });
+    toast(hidden ? 'انخفى من المنصة ✓' : 'رجع للمراجعة، ويطلع بعد الاعتماد ✓');
+    await loadRes();
+  } catch (err) {
+    if (authFailed(err)) return;
+    showAlert('#res-alert', (err && err.message) || 'صار خطأ، حاول مرة ثانية.');
+    btn.disabled = false;
+  }
+}
+
+// ─── نموذج المورد (إضافة أو تعديل) ───
+function resField(key, label, optional) {
+  const w = el('div', 'field');
+  w.dataset.f = key;
+  const l = el('label', null, label);
+  l.htmlFor = 'r-' + key;
+  if (optional) { l.appendChild(document.createTextNode(' ')); l.appendChild(el('span', 'opt-l', '(اختياري)')); }
+  w.appendChild(l);
+  w.addEventListener('input', () => w.classList.remove('err'));
+  w.addEventListener('change', () => w.classList.remove('err'));
+  return w;
+}
+function resInput(key, label, opts) {
+  opts = opts || {};
+  const w = resField(key, label, opts.optional);
+  const i = el(opts.area ? 'textarea' : 'input');
+  i.id = 'r-' + key;
+  i.maxLength = opts.max || 150;
+  if (opts.dir) i.dir = opts.dir;
+  if (opts.placeholder) i.placeholder = opts.placeholder;
+  if (opts.value) i.value = opts.value;
+  if (opts.inputmode) i.inputMode = opts.inputmode;
+  w.appendChild(i);
+  if (opts.hint) w.appendChild(el('div', 'sub', opts.hint));
+  return w;
+}
+function resSeg(key, label, options) { // options: [[القيمة، النص]]
+  const w = resField(key, label);
+  const seg = el('div', 'seg');
+  seg.dataset.key = key;
+  options.forEach(([v, txt]) => {
+    const b = el('button', RF[key] === v ? 'sel' : '', txt);
+    b.type = 'button';
+    b.dataset.v = v;
+    b.addEventListener('click', () => { RF[key] = v; [...seg.children].forEach(x => x.classList.toggle('sel', x === b)); w.classList.remove('err'); syncResForm(); });
+    seg.appendChild(b);
+  });
+  w.appendChild(seg);
+  return w;
+}
+function resDept() { return RF.it && RF.it.place === 'department' ? RF.it.dept : RD.dept; }
+
+function openResForm(it) {
+  RF = { it: it, id: it ? it.id : '', place: it ? it.place : 'department', area: it ? it.area : 'resources',
+    type: it ? it.type : '', content: it ? it.content : '' };
+  hideAlert('#rf-alert');
+  $('#rf-title').textContent = it ? 'تعديل مورد' : 'إضافة مورد';
+  $('#rf-meta').textContent = it ? it.id + (it.status === 'معتمد' ? ' · منشور: التعديل يتطبق بعد الاعتماد، وتظل النسخة الحالية لين ذاك' : '') : '';
+  const box = $('#rf-fields');
+  box.innerHTML = '';
+  if (RD.role === 'support') {
+    const own = !it || it.place !== 'department' || it.dept === RD.dept;
+    box.appendChild(resSeg('place', 'وين المورد؟', [['department', own ? 'موارد قسمكم' : 'قسم ' + it.dept], ['shared', 'الموارد المشتركة'], ['system', 'أنظمة النادي']]));
+  }
+  box.appendChild(resSeg('area', 'المكان', [['resources', 'موارد القسم'], ['archive', 'أرشيف القسم']]));
+  const cw = resField('category', 'التصنيف');
+  const cs = el('select');
+  cs.id = 'r-category';
+  cw.appendChild(cs);
+  box.appendChild(cw);
+  box.appendChild(resInput('title', 'العنوان', { value: it ? it.title : '' }));
+  box.appendChild(resInput('description', 'الوصف', { area: true, max: 1000, optional: true, value: it ? it.description : '' }));
+  box.appendChild(resSeg('type', 'النوع', RD.types.map(x => [x, x])));
+  box.appendChild(resSeg('content', 'المحتوى', [['file', 'ملف'], ['text', 'نص جاهز'], ['link', 'رابط']]));
+
+  // الملفات: القديمة (للتعديل) + رفع + روابط درايف للكبيرة
+  const fw = resField('files', 'الملفات');
+  if (it && it.files && it.files.length) {
+    const keep = el('div', 'files-keep');
+    keep.id = 'r-keep';
+    it.files.forEach(f => {
+      const l = el('label');
+      const cb = el('input');
+      cb.type = 'checkbox';
+      cb.checked = true;
+      cb.value = f.url;
+      const a = el('a', null, 'فتح');
+      a.href = f.url; a.target = '_blank'; a.rel = 'noopener';
+      l.append(cb, document.createTextNode(f.label || 'ملف'), a);
+      keep.appendChild(l);
+    });
+    fw.appendChild(keep);
+  }
+  const fi = el('input');
+  fi.type = 'file';
+  fi.multiple = true;
+  fi.id = 'r-file';
+  fi.className = 'file-input';
+  fw.appendChild(fi);
+  fw.appendChild(el('div', 'sub', 'تقدر تختار أكثر من ملف (مثل نسخ الشعار). كل ملف حتى ' + RD.maxFileMb + ' ميغا.'));
+  const dl = el('textarea');
+  dl.id = 'r-driveLinks';
+  dl.dir = 'ltr';
+  dl.maxLength = 3000;
+  dl.placeholder = 'https://drive.google.com/…';
+  dl.style.minHeight = '70px';
+  fw.appendChild(el('div', 'sub', 'ملف أكبر من ' + RD.maxFileMb + ' ميغا؟ ارفعه على درايفك وخلّ مشاركته "أي أحد معه الرابط"، وحط رابطه هنا (رابط في كل سطر). ينفتح في درايف.'));
+  fw.appendChild(dl);
+  box.appendChild(fw);
+  box.appendChild(resInput('text', 'النص', { area: true, max: 20000, value: it && it.content === 'text' ? it.text : '' }));
+  box.appendChild(resInput('link', 'الرابط', { dir: 'ltr', max: 1000, placeholder: 'https://', value: it && it.content === 'link' ? it.link : '' }));
+  const ow = el('div', 'row2');
+  ow.id = 'r-archive-extra';
+  ow.append(resInput('owner', 'صاحب العمل', { optional: true, value: it ? it.owner : '' }),
+    resInput('year', 'السنة', { optional: true, max: 4, inputmode: 'numeric', placeholder: '2025', value: it ? it.year : '' }));
+  box.appendChild(ow);
+  showPanel('res-form');
+  syncResForm(it ? it.categoryId : '');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+// يطلّع الخانات اللي تخص المكان والمحتوى، ويعبّي التصنيفات حسب القسم (موارد / أرشيف)
+function syncResForm(catId) {
+  const dep = RF.place === 'department', sys = RF.place === 'system', arch = dep && RF.area === 'archive';
+  const show = (key, on) => { const w = $('#rf-fields .field[data-f="' + key + '"]'); if (w) w.classList.toggle('hidden', !on); };
+  show('area', dep);
+  show('category', dep);
+  show('type', !sys);
+  const allowed = sys ? ['link'] : arch ? ['file', 'link'] : ['file', 'text', 'link'];
+  if (allowed.indexOf(RF.content) < 0) RF.content = sys ? 'link' : '';
+  $$('#rf-fields .seg[data-key="content"] button').forEach(b => { b.classList.toggle('hidden', allowed.indexOf(b.dataset.v) < 0); b.classList.toggle('sel', b.dataset.v === RF.content); });
+  show('content', !sys);
+  show('files', RF.content === 'file');
+  show('text', RF.content === 'text');
+  show('link', RF.content === 'link');
+  $('#r-archive-extra').classList.toggle('hidden', !arch);
+  // التصنيف ما يطلع (ولا يكون إجباري) لو القسم ما عنده تصنيفات. الأرشيف بدون تصنيفات: السكربت يضيف "الأعمال السابقة"
+  const catsOf = area => RD.categories.filter(c => c.dept === resDept() && c.area === area);
+  const cs = $('#r-category');
+  const cur = catId !== undefined && catId !== '' ? catId : cs.value;
+  cs.innerHTML = '';
+  const add = (v, txt) => { const o = el('option', null, txt); o.value = v; cs.appendChild(o); };
+  add('', 'اختر التصنيف');
+  catsOf(RF.area).forEach(c => add(c.id, c.label));
+  cs.value = [...cs.options].some(o => o.value === cur) ? cur : '';
+  show('category', dep && cs.options.length > 1);
+}
+$('#rf-back').addEventListener('click', () => showPanel('res'));
+$('#rf-back-top').addEventListener('click', () => showPanel('res'));
+
+$('#rf-form').addEventListener('submit', async e => {
+  e.preventDefault();
+  hideAlert('#rf-alert');
+  $$('#rf-fields .field.err').forEach(x => x.classList.remove('err'));
+  const val = id => { const x = $('#r-' + id); return x ? x.value.trim() : ''; };
+  const bad = [];
+  const need = (key, ok) => { if (!ok) bad.push($('#rf-fields .field[data-f="' + key + '"]')); };
+  const dep = RF.place === 'department', sys = RF.place === 'system';
+  if (dep && $('#r-category').options.length > 1) need('category', val('category'));
+  need('title', val('title'));
+  if (!sys) { need('type', RF.type); need('content', RF.content); }
+  const keep = $$('#r-keep input:checked').map(x => x.value);
+  const picked = [...($('#r-file').files || [])];
+  if (RF.content === 'file') need('files', keep.length || picked.length || val('driveLinks'));
+  if (RF.content === 'text') need('text', val('text'));
+  if (RF.content === 'link' || sys) need('link', val('link') && /^(https?:\/\/)?[^\s.]+\.\S+$/i.test(val('link')));
+  if (val('year') && !/^\d{4}$/.test(val('year'))) need('year', false);
+  let msg = '';
+  if (RF.content === 'file') {
+    const big = picked.find(f => f.size > RD.maxFileMb * 1048576);
+    const total = picked.reduce((a, f) => a + f.size, 0);
+    if (big) { need('files', false); msg = '"' + big.name + '" أكبر من ' + RD.maxFileMb + ' ميغا. ارفعه على درايف وحط رابطه.'; }
+    else if (total > RD.maxTotalMb * 1048576) { need('files', false); msg = 'مجموع الملفات أكبر من ' + RD.maxTotalMb + ' ميغا. ارفع الكبيرة على درايف وحط روابطها.'; }
+  }
+  if (bad.length) {
+    bad.forEach(x => x && x.classList.add('err'));
+    showAlert('#rf-alert', msg || 'يرجى تعبئة الحقول المطلوبة.');
+    if (bad[0]) bad[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+    return;
+  }
+  const data = { code: store.get('code', ''), id: RF.id, place: RF.place, area: RF.area, categoryId: val('category'),
+    title: val('title'), description: val('description'), type: RF.type, content: sys ? 'link' : RF.content,
+    text: val('text'), link: val('link'), keep: keep, driveLinks: val('driveLinks'), owner: val('owner'), year: val('year'), files: [] };
+  const btn = $('#rf-save');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spin"></span> جاري الإرسال…';
+  try {
+    if (RF.content === 'file') for (const f of picked) data.files.push(await readFile(f));
+    const res = await api('saveResource', data);
+    toast(res.edit ? 'انرسل التعديل للاعتماد ✓' : 'انحفظ، وبيطلع في المنصة بعد الاعتماد ✓');
+    RES_TAB = 'mine';
+    showPanel('res');
+    await loadRes();
+  } catch (err) {
+    if (authFailed(err)) return;
+    showAlert('#rf-alert', (err && err.message) || 'صار خطأ أثناء الإرسال، حاول مرة ثانية.');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'إرسال للاعتماد';
+  }
+});
+
+// ─── عرض المورد واعتماده (الدعم والتطوير)، أو عرض بس (الرئاسة) ───
+const RR_SHOW = ['العنوان', 'الوصف', 'المكان', 'القسم', 'التصنيف', 'النوع', 'المحتوى', 'الرابط', 'الملفات', 'النص', 'صاحب العمل', 'السنة'];
+function rrValue(k, v) {
+  const s = String(v == null ? '' : v);
+  if (k === 'الملفات' || k === 'الرابط') {
+    const d = el('div', 'links');
+    s.split(/\n+/).filter(Boolean).forEach(line => {
+      const i = line.lastIndexOf('|');
+      const url = i > 0 ? line.slice(i + 1).trim() : line.trim(), label = i > 0 ? line.slice(0, i).trim() : '';
+      const a = el('a', null, label ? '📎 ' + label : linkLabel(url));
+      a.href = url; a.target = '_blank'; a.rel = 'noopener'; a.title = url;
+      d.appendChild(a);
+    });
+    return d;
+  }
+  return el('div', 'txt', s);
+}
+function openResReview(it) {
+  const isEdit = it.status === 'معتمد' && it.edit && it.edit.status === 'بانتظار المراجعة';
+  const decide = RD.role === 'support' && (it.status === 'بانتظار المراجعة' || isEdit);
+  RR = { it: it, kind: isEdit ? 'edit' : 'new', decision: '' };
+  hideAlert('#rr-alert');
+  $('#rr-title').textContent = it.title;
+  $('#rr-meta').textContent = [it.id, resWhere(it), 'أضافه: ' + it.addedBy, isEdit ? 'تعديل طلبه: ' + it.edit.by + ' · ' + it.edit.at : ''].filter(Boolean).join(' · ');
+  const body = $('#rr-body');
+  body.innerHTML = '';
+  const raw = it.raw || {};
+  if (isEdit) {
+    body.appendChild(el('div', 'rr-sec', 'التعديل المطلوب'));
+    const changed = RR_SHOW.filter(k => k in it.edit.values && String(it.edit.values[k] == null ? '' : it.edit.values[k]) !== String(raw[k] == null ? '' : raw[k]));
+    if (!changed.length) body.appendChild(el('div', 'locked', 'ما تغيّر شي ظاهر (يمكن تغيّر حجم أو صيغة الملف بس).'));
+    changed.forEach(k => {
+      const r = el('div', 'rr-row');
+      const v = el('div');
+      if (raw[k] && k !== 'الملفات' && k !== 'النص') v.appendChild(el('span', 'old', raw[k]));
+      v.appendChild(rrValue(k, it.edit.values[k]));
+      r.append(el('b', null, k), v);
+      body.appendChild(r);
+    });
+    body.appendChild(el('div', 'rr-sec', 'النسخة المنشورة الحين'));
+  }
+  RR_SHOW.forEach(k => {
+    if (!raw[k]) return;
+    const r = el('div', 'rr-row');
+    r.append(el('b', null, k), rrValue(k, raw[k]));
+    body.appendChild(r);
+  });
+  $('#rr-decide').classList.toggle('hidden', !decide);
+  $('#rr-save').classList.toggle('hidden', !decide);
+  $$('#rr-decide .decide button').forEach(b => b.classList.remove('sel'));
+  $('#rr-decide .reason').classList.add('hidden');
+  $('#rr-reason').value = '';
+  showPanel('res-review');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+$$('#rr-decide .decide button').forEach(b => b.addEventListener('click', () => {
+  RR.decision = b.dataset.v;
+  $$('#rr-decide .decide button').forEach(x => x.classList.toggle('sel', x === b));
+  $('#rr-decide .reason').classList.toggle('hidden', RR.decision !== 'reject');
+  $('#rr-decide').classList.remove('err');
+}));
+$('#rr-back').addEventListener('click', () => showPanel('res'));
+$('#rr-back-top').addEventListener('click', () => showPanel('res'));
+$('#rr-save').addEventListener('click', async () => {
+  hideAlert('#rr-alert');
+  if (!RR.decision) { $('#rr-decide').classList.add('err'); showAlert('#rr-alert', 'اختر اعتماد أو رفض.'); return; }
+  const reason = $('#rr-reason').value.trim();
+  if (RR.decision === 'reject' && !reason) { $('#rr-decide .reason').classList.add('err'); showAlert('#rr-alert', 'اكتب سبب الرفض.'); return; }
+  const btn = $('#rr-save');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spin"></span> جاري الحفظ…';
+  try {
+    await api('reviewResource', { code: store.get('code', ''), id: RR.it.id, kind: RR.kind, decision: RR.decision, reason: reason });
+    toast(RR.decision === 'approve' ? 'انعتمد، ويطلع في المنصة خلال دقيقة ✓' : 'انرفض، والقائد يشوف السبب ✓');
+    showPanel('res');
+    await loadRes();
+  } catch (err) {
+    if (authFailed(err)) return;
+    showAlert('#rr-alert', (err && err.message) || 'صار خطأ أثناء الحفظ، حاول مرة ثانية.');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'حفظ';
   }
 });
 
