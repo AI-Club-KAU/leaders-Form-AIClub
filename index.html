@@ -1594,7 +1594,8 @@ function openResForm(it) {
   }
   box.appendChild(fw);
   box.appendChild(resInput('text', 'النص', { area: true, max: 20000, value: it && it.content === 'text' ? it.text : '' }));
-  box.appendChild(resInput('link', 'الرابط', { dir: 'ltr', max: 1000, placeholder: 'https://', value: it && it.content === 'link' ? it.link : '' }));
+  box.appendChild(resInput('link', 'الرابط', { dir: 'ltr', max: 1000, placeholder: 'https://', value: it && it.content === 'link' ? it.link : '',
+    hint: it && it.content === 'link' ? 'عدّلت ملفك الأصلي؟ حط رابطه هنا عشان تتحدث نسخة المنصة.' : 'للمواقع وملفات قوقل بس. غيرها ارفعه كملف.' }));
   const ow = el('div', 'row2');
   ow.id = 'r-archive-extra';
   ow.append(resInput('owner', 'صاحب العمل', { optional: true, value: it ? it.owner : '' }),
