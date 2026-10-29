@@ -1520,10 +1520,11 @@ function resSeg(key, label, options) { // options: [[القيمة، النص]]
   w.appendChild(seg);
   return w;
 }
-function resDept() { return RF.it && RF.it.place === 'department' ? RF.it.dept : RD.dept; }
+function resDept() { return RF.dept; }
 
 function openResForm(it) {
   RF = { it: it, id: it ? it.id : '', place: it ? it.place : 'department', area: it ? it.area : 'resources',
+    dept: it && it.place === 'department' ? it.dept : RD.dept,
     type: it ? it.type : '', content: it ? it.content : '' };
   hideAlert('#rf-alert');
   $('#rf-title').textContent = it ? 'تعديل مورد' : 'إضافة مورد';
@@ -1531,8 +1532,16 @@ function openResForm(it) {
   const box = $('#rf-fields');
   box.innerHTML = '';
   if (RD.role === 'support') {
-    const own = !it || it.place !== 'department' || it.dept === RD.dept;
-    box.appendChild(resSeg('place', 'وين المورد؟', [['department', own ? 'موارد قسمكم' : 'قسم ' + it.dept], ['shared', 'الموارد المشتركة'], ['system', 'أنظمة النادي']]));
+    box.appendChild(resSeg('place', 'وين المورد؟', [['department', 'موارد قسم'], ['shared', 'الموارد المشتركة'], ['system', 'أنظمة النادي']]));
+    // الدعم والتطوير يقدر يرفع لأي قسم (مثل الملفات الكبيرة اللي يطلبها القائد)
+    const dw = resField('dept', 'القسم');
+    const ds = el('select');
+    ds.id = 'r-dept';
+    RD.depts.forEach(d => { const o = el('option', null, d); o.value = d; ds.appendChild(o); });
+    ds.value = RF.dept;
+    ds.addEventListener('change', () => { RF.dept = ds.value; syncResForm(''); });
+    dw.appendChild(ds);
+    box.appendChild(dw);
   }
   box.appendChild(resSeg('area', 'المكان', [['resources', 'موارد القسم'], ['archive', 'أرشيف القسم']]));
   const cw = resField('category', 'التصنيف');
@@ -1569,15 +1578,20 @@ function openResForm(it) {
   fi.id = 'r-file';
   fi.className = 'file-input';
   fw.appendChild(fi);
-  fw.appendChild(el('div', 'sub', 'تقدر تختار أكثر من ملف (مثل نسخ الشعار). كل ملف حتى ' + RD.maxFileMb + ' ميغا.'));
-  const dl = el('textarea');
-  dl.id = 'r-driveLinks';
-  dl.dir = 'ltr';
-  dl.maxLength = 3000;
-  dl.placeholder = 'https://drive.google.com/…';
-  dl.style.minHeight = '70px';
-  fw.appendChild(el('div', 'sub', 'ملف أكبر من ' + RD.maxFileMb + ' ميغا؟ ارفعه على درايفك وخلّ مشاركته "أي أحد معه الرابط"، وحط رابطه هنا (رابط في كل سطر). ينفتح في درايف.'));
-  fw.appendChild(dl);
+  fw.appendChild(el('div', 'sub', 'تقدر تختار أكثر من ملف، كل ملف حتى ' + RD.maxFileMb + ' ميغا.'));
+  // الملفات الكبيرة: الدعم والتطوير يرفعها على درايف النادي (عشان ما تضيع لو انحذفت من حساب شخصي)
+  if (RD.role === 'support') {
+    const dl = el('textarea');
+    dl.id = 'r-driveLinks';
+    dl.dir = 'ltr';
+    dl.maxLength = 3000;
+    dl.placeholder = 'https://drive.google.com/…';
+    dl.style.minHeight = '70px';
+    fw.appendChild(el('div', 'sub', 'ملف أكبر من ' + RD.maxFileMb + ' ميغا: ارفعه على درايف النادي وحط رابطه هنا (رابط في كل سطر).'));
+    fw.appendChild(dl);
+  } else {
+    fw.appendChild(el('div', 'sub', 'ملف أكبر من ' + RD.maxFileMb + ' ميغا؟ تواصل مع فريق الدعم والتطوير.'));
+  }
   box.appendChild(fw);
   box.appendChild(resInput('text', 'النص', { area: true, max: 20000, value: it && it.content === 'text' ? it.text : '' }));
   box.appendChild(resInput('link', 'الرابط', { dir: 'ltr', max: 1000, placeholder: 'https://', value: it && it.content === 'link' ? it.link : '' }));
@@ -1595,6 +1609,7 @@ function syncResForm(catId) {
   const dep = RF.place === 'department', sys = RF.place === 'system', arch = dep && RF.area === 'archive';
   const show = (key, on) => { const w = $('#rf-fields .field[data-f="' + key + '"]'); if (w) w.classList.toggle('hidden', !on); };
   show('area', dep);
+  show('dept', dep);
   show('category', dep);
   show('type', !sys);
   const allowed = sys ? ['link'] : arch ? ['file', 'link'] : ['file', 'text', 'link'];
@@ -1649,7 +1664,7 @@ $('#rf-form').addEventListener('submit', async e => {
     if (bad[0]) bad[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
     return;
   }
-  const data = { code: store.get('code', ''), id: RF.id, place: RF.place, area: RF.area, categoryId: val('category'),
+  const data = { code: store.get('code', ''), id: RF.id, place: RF.place, area: RF.area, dept: RF.dept, categoryId: val('category'),
     title: val('title'), description: val('description'), type: RF.type, content: sys ? 'link' : RF.content,
     text: val('text'), link: val('link'), keep: keep, driveLinks: val('driveLinks'), owner: val('owner'), year: val('year'), files: [] };
   const btn = $('#rf-save');
