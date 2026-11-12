@@ -399,9 +399,9 @@
   <main class="card login hidden" id="view-login">
     <div class="step show">
       <h2>تسجيل الدخول</h2>
-      <p class="sub">رمز الدخول الخاص فيك</p>
+      <p class="sub">رقمك الجامعي</p>
       <form id="login-form" novalidate>
-        <div class="field"><input id="f-code" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="رمز الدخول"></div>
+        <div class="field"><input id="f-code" inputmode="numeric" maxlength="10" autocomplete="off" placeholder="2210345" aria-label="الرقم الجامعي"></div>
         <div class="alert" id="login-alert"></div>
         <div class="actions"><button type="submit" class="btn btn-primary" id="login-btn">دخول</button></div>
       </form>
@@ -585,9 +585,9 @@ function api(fn, arg) {
       .then(j => { if (!j.ok) throw new Error(j.error); return j.result; });
   }
   return new Promise((res, rej) => setTimeout(() => {
-    if (fn === 'login') return String(arg).trim() === 'x' ? rej(new Error('الرمز غير صحيح.')) : res({ name: 'نورة الغامدي', dept: 'الإعلام والتسويق', role: 'قائدة', title: 'قائدة قسم الإعلام والتسويق', isSupport: false, ratings: [], resRole: 'dept' });
+    if (fn === 'login') return String(arg).trim() === 'x' ? rej(new Error('رقمك الجامعي غير موجود في قائمة القادة.')) : res({ name: 'نورة الغامدي', dept: 'الإعلام والتسويق', role: 'قائدة', title: 'قائدة قسم الإعلام والتسويق', isSupport: false, canReview: false, canLog: true, ratings: [], resRole: 'none' });
     if (fn === 'getQueue') return res(Object.assign({ mine: [] }, JSON.parse(JSON.stringify(MOCK_Q))));
-    if (fn === 'getLeaderFormData') return res({ events: [{ title: 'Introduction To AI', type: 'ورشة', date: '2026/10/08' }], eventsError: false,
+    if (fn === 'getLeaderFormData') return res({ events: [{ title: 'Introduction To AI', type: 'ورشة', date: '2026/10/08', scope: 'internal' }, { title: 'بوث معرض الرياض', type: 'بوث', date: '2026/11/01', scope: 'external' }], eventsError: false,
       kinds: { supervise: 'إشراف على مهمة أو مشروع', initiative: 'مبادرة', assigned: 'مهمة مسندة', internal: 'مشاركة داخلية', external: 'مشاركة خارجية' },
       sizes: TASK_SIZES, initiativeFor: INITIATIVE_FOR, activities: ['هاكاثون أو مسابقة', 'معرض أو فعالية جامعية', 'تطوع باسم النادي', 'أخرى'], results: ['مشاركة', 'تأهل', 'مركز أول', 'مركز ثاني', 'مركز ثالث', 'أخرى'], maxAgeDays: 30, maxFileMb: 10 });
     if (fn === 'submitLeaderLog') return res({ id: 'LDR-7KQ', status: 'بانتظار المراجعة' });
@@ -635,7 +635,7 @@ function resetList(counts) {
 const VIEW_GROUPS = ['العلاقات العامة', 'الإعلام والتسويق', 'التقني', 'الهاكاثونات', 'التخطيط والفعاليات', 'الدعم والتطوير', 'قادة المشاريع'];
 const LEADERS_GROUP = '__leaders';
 function setupViewMode() {
-  const ro = !!(ME && ME.readOnly);
+  const ro = !!(ME && ME.canReview); // الرئاسة: فلتر بالقسم في المراجعة
   $('#view-filter').classList.toggle('hidden', !ro);
   const s = $('#dept-filter');
   s.innerHTML = '';
@@ -657,9 +657,9 @@ const HOME_ICONS = {
   resources: '<path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>',
 };
 function homeBoxes() {
-  const ro = !!(ME && ME.readOnly);
-  const boxes = [{ id: 'review', label: 'مراجعة وتقييم الأعضاء' }];
-  if (!ro) boxes.push({ id: 'log', label: 'تسجيل عمل أو مشاركة' });
+  const boxes = [];
+  if (ME && ME.canReview) boxes.push({ id: 'review', label: 'مراجعة وتقييم الأعمال' });
+  if (ME && ME.canLog) boxes.push({ id: 'log', label: 'تسجيل عمل أو مشاركة' });
   if (ME && ME.resRole && ME.resRole !== 'none') boxes.push({ id: 'resources', label: 'إدارة الموارد' });
   return boxes;
 }
@@ -687,10 +687,10 @@ function openList(which) {
   const mine = which === 'mine';
   if (mine) LIST = 'mine';
   else if (LIST === 'mine') LIST = 'pending';
-  $('#list-title').textContent = mine ? 'تسجيل عمل أو مشاركة' : 'مراجعة وتقييم الأعضاء';
+  $('#list-title').textContent = mine ? 'تسجيل عمل أو مشاركة' : 'مراجعة وتقييم الأعمال';
   $('#list-tabs').classList.toggle('hidden', mine);
   $$('#list-tabs .tab').forEach(x => x.classList.toggle('active', x.dataset.list === LIST));
-  $('#view-filter').classList.toggle('hidden', mine || !(ME && ME.readOnly));
+  $('#view-filter').classList.toggle('hidden', mine || !(ME && ME.canReview));
   hideAlert('#list-alert');
   showPanel('list');
   renderList();
@@ -726,13 +726,13 @@ $('#login-form').addEventListener('submit', e => {
   e.preventDefault();
   hideAlert('#login-alert');
   const code = $('#f-code').value.trim();
-  if (!code) { showAlert('#login-alert', 'اكتب رمز الدخول.'); return; }
+  if (!/^[0-9٠-٩]{7}$/.test(code)) { showAlert('#login-alert', 'الرقم الجامعي لازم يكون 7 أرقام.'); return; }
   doLogin(code, false);
 });
 $('#logout').addEventListener('click', () => { store.del('code'); ME = null; loadSeq++; resetList('0'); $('#f-code').value = ''; showView('login'); });
 function authFailed(err) {
-  if (err && err.message === 'الرمز غير صحيح.') {
-    store.del('code'); showView('login'); showAlert('#login-alert', 'تغيّر رمز الدخول. ادخل الرمز الجديد.'); return true;
+  if (err && err.message === 'رقمك الجامعي غير موجود في قائمة القادة.') {
+    store.del('code'); showView('login'); showAlert('#login-alert', 'رقمك ما عاد موجود في قائمة القادة. تواصل مع فريق الدعم والتطوير.'); return true;
   }
   return false;
 }
@@ -762,7 +762,7 @@ function renderList() {
   const box = $('#list');
   box.innerHTML = '';
   if (LIST === 'mine') return renderMine(box);
-  const f = ME && ME.readOnly ? $('#dept-filter').value : '';
+  const f = ME && ME.canReview ? $('#dept-filter').value : '';
   const items = Q[LIST].filter(it => !f || groupOf(it) === f);
   if (!items.length) {
     box.appendChild(el('div', 'empty', LIST === 'pending' ? 'ما فيه تسجيلات بانتظار المراجعة 🎉' : 'ما فيه مراجعات هذا الشهر.'));
@@ -1185,13 +1185,14 @@ function rgRange() {
   si.addEventListener('change', follow);
   return r;
 }
-function rgEvent() {
+// scope: 'internal' أو 'external' = يطلع بس فعاليات هالتصنيف (نفس نماذج الأعضاء)
+function rgEvent(scope) {
   const w = rgField('event', 'الفعالية');
   const s = el('select');
   s.id = 'g-event';
   const add = (v, t) => { const o = el('option', null, t); o.value = v; s.appendChild(o); };
   add('', 'اختر الفعالية');
-  FD.events.forEach(ev => add(ev.title, ev.title));
+  FD.events.filter(ev => !scope || (ev.scope || 'internal') === scope).forEach(ev => add(ev.title, ev.title));
   add(EVENT_OTHER, 'فعالية غير موجودة في القائمة ✏️');
   w.appendChild(s);
   const other = el('input', 'hidden');
@@ -1275,13 +1276,13 @@ async function buildRegister(kind) {
     box.appendChild(rgSeg('size', 'الحجم', FD.sizes));
     box.appendChild(rgOutput('المخرج'));
   } else if (kind === 'internal') {
-    box.appendChild(rgEvent());
+    box.appendChild(rgEvent('internal'));
     box.appendChild(rgRange());
     box.appendChild(rgInput('details', 'ملاحظات', { area: true, max: 3000, optional: true }));
     box.appendChild(rgOutput('المخرج'));
   } else {
     box.appendChild(rgSeg('activity', 'نوع النشاط', FD.activities));
-    box.appendChild(rgInput('title', 'اسم الفعالية'));
+    box.appendChild(rgEvent('external'));
     box.appendChild(rgInput('organizer', 'الجهة المنظمة'));
     box.appendChild(rgRange());
     box.appendChild(rgSeg('result', 'النتيجة', FD.results));
@@ -1317,7 +1318,8 @@ $('#rg-form').addEventListener('submit', async e => {
   if (k === 'internal') { const ev = $('#g-event').value; need('event', ev && (ev !== EVENT_OTHER || val('eventOther'))); need('start', val('start')); need('date', val('date')); }
   if (k === 'external') {
     need('activity', v.activity && (v.activity !== 'أخرى' || val('activityOther')));
-    need('title', val('title')); need('organizer', val('organizer')); need('start', val('start')); need('date', val('date'));
+    const xev = $('#g-event').value; need('event', xev && (xev !== EVENT_OTHER || val('eventOther')));
+    need('organizer', val('organizer')); need('start', val('start')); need('date', val('date'));
     need('result', v.result && (v.result !== 'أخرى' || val('resultOther')));
   }
   const link = val('link');
