@@ -645,10 +645,10 @@ function setupViewMode() {
   VIEW_GROUPS.forEach(d => add(d, d));
   add(LEADERS_GROUP, 'تسجيلات القادة');
 }
-// القسم اللي يتبع له التسجيل: المهمة لصالح قسمها، والمشاركة قسم العضو
+// القسم اللي يتبع له التسجيل: قسم العضو اللي سجّله (المهام والمشاركات)
 function groupOf(it) {
   if (it.isLeader) return LEADERS_GROUP;
-  return it.isTask ? it.forDept : (it.members[0] && it.members[0].dept) || '';
+  return (it.members[0] && it.members[0].dept) || '';
 }
 // ─── الصفحة الأولى: بوكس لكل نموذج (اللي ما يخص القائد ما يطلع له) ───
 const HOME_ICONS = {
@@ -836,7 +836,6 @@ function openReview(it) {
   $('#rv-title').textContent = it.kind;
   $('#rv-meta').innerHTML = '';
   const meta = [it.id, 'سجّله: ' + it.registrant, 'رُفع: ' + it.registeredAt];
-  if (it.isTask) meta.push('لصالح: ' + it.forDept);
   if (it.edited) meta.push('✏️ عُدّل من القائد');
   $('#rv-meta').textContent = meta.join(' · ');
 
