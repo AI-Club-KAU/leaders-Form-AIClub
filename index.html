@@ -610,7 +610,7 @@ function api(fn, arg) {
     if (fn === 'deleteLeaderLog') { MOCK_MINE = MOCK_MINE.filter(x => x.id !== arg.id); return res({ id: arg.id }); }
     if (fn === 'getLeaderFormData') return res({ events: [{ title: 'Introduction To AI', type: 'ورشة', date: '2026/10/08', scope: 'internal' }, { title: 'بوث معرض الرياض', type: 'بوث', date: '2026/11/01', scope: 'external' }], eventsError: false,
       kinds: { supervise: 'إشراف على مهمة أو مشروع', initiative: 'مبادرة', assigned: 'مهمة مسندة', internal: 'مشاركة داخلية', external: 'مشاركة خارجية' },
-      sizes: TASK_SIZES, initiativeFor: INITIATIVE_FOR, activities: ['هاكاثون أو مسابقة', 'معرض أو فعالية جامعية', 'تطوع باسم النادي', 'أخرى'], results: ['مشاركة', 'تأهل', 'مركز أول', 'مركز ثاني', 'مركز ثالث', 'أخرى'], maxAgeDays: 30, maxFileMb: 10 });
+      sizes: TASK_SIZES, initiativeFor: INITIATIVE_FOR, activities: ['هاكاثون أو مسابقة', 'معرض أو فعالية جامعية', 'تطوع باسم النادي', 'أخرى'], results: ['مشاركة', 'تأهل', 'مركز أول', 'مركز ثاني', 'مركز ثالث', 'أخرى'], maxAgeDays: 0, maxFileMb: 10 });
     if (fn === 'submitLeaderLog') return res({ id: 'LDR-7KQ', status: 'بانتظار المراجعة' });
     if (fn === 'getResourceData') return res(MOCK_RES);
     if (fn === 'saveResource') return res({ id: 'RES-009', status: 'بانتظار المراجعة', edit: !!arg.id });
@@ -1243,7 +1243,7 @@ function rgInput(key, label, opts) {
   if (opts.placeholder) i.placeholder = opts.placeholder;
   if (opts.type === 'date') {
     i.max = opts.max !== undefined ? opts.max : dayStr(0);
-    i.min = opts.min !== undefined ? opts.min : dayStr(-(FD.maxAgeDays || 30));
+    i.min = opts.min !== undefined ? opts.min : (FD.maxAgeDays ? dayStr(-FD.maxAgeDays) : ''); // 0 = بدون حد
     const box = el('div', 'date-box blank');
     const sync = () => box.classList.toggle('blank', !i.value);
     i.addEventListener('input', sync);
