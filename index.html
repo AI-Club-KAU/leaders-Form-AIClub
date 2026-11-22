@@ -351,6 +351,15 @@
   #view-res #res-tabs { margin: 0 0 18px; }
   .res-actions { display: flex; gap: 16px; margin-top: 8px; }
   .mine .note-edit { margin-top: 6px; font-size: 13px; color: #ffe08a; }
+  /* أعمالي: تعديل وحذف */
+  .mine .acts { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
+  .mine .acts .btn { padding: 8px 16px; font-size: 13px; }
+  .btn-danger { background: transparent; color: var(--danger); border-color: rgba(255,107,107,.45); }
+  .btn-danger.sure { background: var(--danger); color: #000; border-color: var(--danger); }
+  .cur-file { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin: 6px 0 10px; padding: 8px 12px;
+    border-radius: 10px; background: var(--surface-3); font-size: 13px; }
+  .cur-file a { color: var(--green); }
+  .cur-file.dropped a { text-decoration: line-through; color: var(--muted); }
   .files-keep { display: grid; gap: 6px; margin-bottom: 10px; }
   .files-keep label { display: flex; align-items: center; gap: 8px; font-size: 14px; padding: 8px 12px; border-radius: 10px; background: var(--surface-2); border: 1px solid var(--border); cursor: pointer; }
   .files-keep input { width: 18px; height: 18px; margin: 0; accent-color: var(--green); }
@@ -569,6 +578,15 @@ const MOCK_RES = { role: 'dept', dept: 'الإعلام والتسويق', depts:
     categoryLabel: 'قوالب التصاميم', type: 'هوية بصرية', content: 'file', link: '', text: '', owner: '', year: '', files: [{ label: 'شعار أبيض', url: 'https://drive.google.com/file/d/x' }],
     status: 'معتمد', addedBy: 'نورة الغامدي', addedAt: '2026-10-12', reason: '', edit: null, raw: {} }], queue: [] };
 
+// للمعاينة المحلية بس: تسجيلات القائد في "أعمالي"
+let MOCK_MINE = [
+  { id: 'LDR-7KQ', kind: 'مهمة مسندة', kindId: 'assigned', title: 'خطة الفصل', date: '2026-11-20', registeredAt: '2026/11/21 — 10:00',
+    status: 'بانتظار المراجعة', reason: '', canEdit: true, canDelete: true, lockReason: '', editsLeft: 2, until: '2026/11/23 — 10:00',
+    values: { title: 'خطة الفصل', details: 'خطة القسم', impact: '', forWho: '', size: 'متوسطة', event: '', activity: '', organizer: '', result: '',
+      start: '', date: '2026-11-20', due: '2026-11-19', delivered: '2026-11-20', longer: false, file: 'https://drive.google.com/file/d/xxxxxxxxxxxxxxxxxxxxxxxx/view', link: '' } },
+  { id: 'LDR-P3D', kind: 'مشاركة داخلية', kindId: 'internal', title: 'Introduction To AI', date: '2026-10-08', registeredAt: '2026/10/09 — 12:00',
+    status: 'مؤكد من الشهادات', reason: '', canEdit: false, canDelete: false, lockReason: 'انراجع، فما يتعدّل. لو فيه غلط تواصل مع الرئاسة.', editsLeft: 2, until: '' },
+];
 function api(fn, arg) {
   if (IS_GAS) {
     return new Promise((res, rej) =>
@@ -579,6 +597,7 @@ function api(fn, arg) {
       : fn === 'getLeaderFormData' ? { action: 'formdata', code: arg } : fn === 'submitLeaderLog' ? { action: 'log', data: arg }
       : fn === 'getResourceData' ? { action: 'resdata', code: arg } : fn === 'saveResource' ? { action: 'ressave', data: arg }
       : fn === 'setResourceHidden' ? { action: 'reshide', data: arg } : fn === 'reviewResource' ? { action: 'resreview', data: arg }
+      : fn === 'editLeaderLog' ? { action: 'logedit', data: arg } : fn === 'deleteLeaderLog' ? { action: 'logdelete', data: arg }
       : { action: 'review', data: arg };
     return fetch(API_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(body) })
       .then(r => r.json(), () => { throw new Error('تعذّر الاتصال، تأكد من الإنترنت وحاول مرة ثانية.'); })
@@ -586,7 +605,9 @@ function api(fn, arg) {
   }
   return new Promise((res, rej) => setTimeout(() => {
     if (fn === 'login') return String(arg).trim() === 'x' ? rej(new Error('رقمك الجامعي غير موجود في قائمة القادة.')) : res({ name: 'نورة الغامدي', dept: 'الإعلام والتسويق', role: 'قائدة', title: 'قائدة قسم الإعلام والتسويق', isSupport: false, canReview: false, canLog: true, ratings: [], resRole: 'none' });
-    if (fn === 'getQueue') return res(Object.assign({ mine: [] }, JSON.parse(JSON.stringify(MOCK_Q))));
+    if (fn === 'getQueue') return res(Object.assign({ mine: MOCK_MINE }, JSON.parse(JSON.stringify(MOCK_Q))));
+    if (fn === 'editLeaderLog') return res({ id: arg.id, status: 'بانتظار المراجعة' });
+    if (fn === 'deleteLeaderLog') { MOCK_MINE = MOCK_MINE.filter(x => x.id !== arg.id); return res({ id: arg.id }); }
     if (fn === 'getLeaderFormData') return res({ events: [{ title: 'Introduction To AI', type: 'ورشة', date: '2026/10/08', scope: 'internal' }, { title: 'بوث معرض الرياض', type: 'بوث', date: '2026/11/01', scope: 'external' }], eventsError: false,
       kinds: { supervise: 'إشراف على مهمة أو مشروع', initiative: 'مبادرة', assigned: 'مهمة مسندة', internal: 'مشاركة داخلية', external: 'مشاركة خارجية' },
       sizes: TASK_SIZES, initiativeFor: INITIATIVE_FOR, activities: ['هاكاثون أو مسابقة', 'معرض أو فعالية جامعية', 'تطوع باسم النادي', 'أخرى'], results: ['مشاركة', 'تأهل', 'مركز أول', 'مركز ثاني', 'مركز ثالث', 'أخرى'], maxAgeDays: 30, maxFileMb: 10 });
@@ -812,8 +833,108 @@ function renderMine(box) {
     row.appendChild(el('div', 'meta', m.id + ' · التاريخ: ' + String(m.date).replace(/-/g, '/')));
     row.appendChild(el('div', 'meta', 'رُفع: ' + m.registeredAt));
     if (m.reason) row.appendChild(el('div', 'why', 'سبب الرفض: ' + m.reason));
+    mineActions(row, m);
     box.appendChild(row);
   });
+}
+
+// تعديل أو حذف: خلال 48 ساعة من التسجيل، وقبل المراجعة، والتعديل مرتين بالكثير (نفس نماذج الأعضاء)
+function mineActions(row, m) {
+  if (!m.canEdit && !m.canDelete) {
+    if (m.lockReason && m.status === 'بانتظار المراجعة') row.appendChild(el('div', 'meta', '🔒 ' + m.lockReason));
+    return;
+  }
+  if (m.until) row.appendChild(el('div', 'meta', 'متاح لين ' + m.until + (m.canEdit ? ' · باقي ' + (m.editsLeft === 1 ? 'تعديل واحد' : m.editsLeft + ' تعديلات') : '')));
+  if (!m.canEdit && m.lockReason) row.appendChild(el('div', 'meta', m.lockReason));
+  const acts = el('div', 'acts');
+  if (m.canEdit) {
+    const e = el('button', 'btn btn-ghost', '✏️ تعديل');
+    e.type = 'button';
+    e.addEventListener('click', () => startLeaderEdit(m));
+    acts.appendChild(e);
+  }
+  const d = el('button', 'btn btn-danger', '🗑️ حذف');
+  d.type = 'button';
+  let timer = null;
+  d.addEventListener('click', async () => {
+    // ضغطة أولى: تأكيد، والثانية خلال 4 ثواني تحذف
+    if (!d.classList.contains('sure')) {
+      d.classList.add('sure');
+      d.textContent = 'متأكد؟ اضغط مرة ثانية';
+      timer = setTimeout(() => { d.classList.remove('sure'); d.textContent = '🗑️ حذف'; }, 4000);
+      return;
+    }
+    clearTimeout(timer);
+    d.disabled = true;
+    d.innerHTML = '<span class="spin"></span>';
+    try {
+      await api('deleteLeaderLog', { code: store.get('code', ''), id: m.id });
+      toast('انحذف ✓');
+      await loadQueue();
+    } catch (err) {
+      if (authFailed(err)) return;
+      d.disabled = false; d.classList.remove('sure'); d.textContent = '🗑️ حذف';
+      toast((err && err.message) || 'تعذّر الحذف، حاول مرة ثانية.');
+    }
+  });
+  acts.appendChild(d);
+  row.appendChild(acts);
+}
+
+async function startLeaderEdit(m) {
+  showPanel('register');
+  try { await loadFormData(); } catch (err) { if (authFailed(err)) return; }
+  await buildRegister(m.kindId);
+  RG.edit = Object.assign({ dropFile: false }, m);
+  $('#rg-title').textContent = 'تعديل: ' + m.title;
+  fillRegister(m.values, m.kindId);
+}
+
+function fillRegister(v, k) {
+  const put = (id, x) => { const i = $('#g-' + id); if (i && x) { i.value = x; i.dispatchEvent(new Event('input', { bubbles: true })); } };
+  put('title', v.title); put('details', v.details); put('impact', v.impact); put('organizer', v.organizer);
+  // الاختيارات، و"أخرى" لو المحفوظ مو من الخيارات
+  const seg = (key, x) => {
+    const box = $('#rg-fields .seg[data-key="' + key + '"]');
+    if (!box || !x) return;
+    const opts = [...box.children].map(b => b.dataset.v);
+    const pick = opts.includes(x) ? x : (opts.includes('أخرى') ? 'أخرى' : '');
+    if (!pick) return;
+    RG.vals[key] = pick;
+    [...box.children].forEach(b => b.classList.toggle('sel', b.dataset.v === pick));
+    const o = $('#g-' + key + 'Other');
+    if (o && pick === 'أخرى') { o.value = x; o.classList.remove('hidden'); }
+  };
+  seg('size', v.size); seg('forWho', v.forWho); seg('activity', v.activity); seg('result', v.result);
+  if (k === 'assigned') {
+    rgSetDate('due', v.due); rgSetDate('delivered', v.delivered);
+    if (v.longer) { const cb = $('#g-longer'); cb.checked = true; cb.dispatchEvent(new Event('change', { bubbles: true })); rgSetDate('date', v.date); }
+  } else {
+    if (v.start) rgSetDate('start', v.start);
+    rgSetDate('date', v.date);
+  }
+  // الفعالية: من القائمة لو موجودة، وإلا "غير موجودة" ومعها الاسم (بدون change عشان ما يتغيّر تاريخ "من")
+  const s = $('#g-event');
+  if (s && v.event) {
+    if ([...s.options].some(o => o.value === v.event)) s.value = v.event;
+    else { s.value = EVENT_OTHER; const o = $('#g-eventOther'); o.value = v.event; o.classList.remove('hidden'); }
+  }
+  put('link', v.link);
+  if (v.file) {
+    const w = $('#rg-fields .field[data-f="output"]');
+    const row = el('div', 'cur-file');
+    const a = el('a', null, 'الملف الحالي');
+    a.href = v.file; a.target = '_blank'; a.rel = 'noopener';
+    const rm = el('button', 'linkbtn', 'إزالة');
+    rm.type = 'button';
+    rm.addEventListener('click', () => {
+      RG.edit.dropFile = !RG.edit.dropFile;
+      row.classList.toggle('dropped', RG.edit.dropFile);
+      rm.textContent = RG.edit.dropFile ? 'تراجع' : 'إزالة';
+    });
+    row.append(a, rm);
+    w.insertBefore(row, $('#g-file'));
+  }
 }
 
 // ─── المراجعة ───
@@ -1094,6 +1215,7 @@ async function openRegister() {
 }
 $('#rg-back-top').addEventListener('click', () => $('#rg-back').click());
 $('#rg-back').addEventListener('click', () => {
+  if (RG.edit) { RG = { kind: '', vals: {} }; openList('mine'); return; } // التعديل يرجع لأعمالي
   if (RG.kind) { openRegister(); return; } // من الخانات يرجع لاختيار النوع
   showPanel('list');
 });
@@ -1341,13 +1463,16 @@ $('#rg-form').addEventListener('submit', async e => {
   const ev = $('#g-event');
   if (ev) { if (ev.value === EVENT_OTHER) data.eventOther = val('eventOther'); else data.event = ev.value; }
   data.link = link && !/^https?:\/\//i.test(link) ? 'https://' + link : link;
+  const editing = RG.edit;
+  if (editing) { data.id = editing.id; data.keepFile = !!(editing.values.file && !editing.dropFile); }
   const btn = $('#rg-save');
   btn.disabled = true;
   btn.innerHTML = '<span class="spin"></span> جاري الإرسال…';
   try {
     if (f && f.files[0]) data.file = await readFile(f.files[0]);
-    const res = await api('submitLeaderLog', data);
-    toast(res.status === 'مؤكد من الشهادات' ? 'تم التسجيل، وتأكدنا من سجل الحضور ✓' : 'تم التسجيل ✓');
+    const res = await api(editing ? 'editLeaderLog' : 'submitLeaderLog', data);
+    toast(editing ? (res.status === 'مؤكد من الشهادات' ? 'تم التعديل، وتأكدنا من سجل الحضور ✓' : 'تم التعديل ✓')
+      : res.status === 'مؤكد من الشهادات' ? 'تم التسجيل، وتأكدنا من سجل الحضور ✓' : 'تم التسجيل ✓');
     RG = { kind: '', vals: {} };
     openList('mine');
     await loadQueue();
