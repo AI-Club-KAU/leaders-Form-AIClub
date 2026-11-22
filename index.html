@@ -597,6 +597,7 @@ function api(fn, arg) {
       : fn === 'getLeaderFormData' ? { action: 'formdata', code: arg } : fn === 'submitLeaderLog' ? { action: 'log', data: arg }
       : fn === 'getResourceData' ? { action: 'resdata', code: arg } : fn === 'saveResource' ? { action: 'ressave', data: arg }
       : fn === 'setResourceHidden' ? { action: 'reshide', data: arg } : fn === 'reviewResource' ? { action: 'resreview', data: arg }
+      : fn === 'deleteResource' ? { action: 'resdelete', data: arg }
       : fn === 'editLeaderLog' ? { action: 'logedit', data: arg } : fn === 'deleteLeaderLog' ? { action: 'logdelete', data: arg }
       : { action: 'review', data: arg };
     return fetch(API_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(body) })
@@ -614,7 +615,7 @@ function api(fn, arg) {
     if (fn === 'submitLeaderLog') return res({ id: 'LDR-7KQ', status: 'بانتظار المراجعة' });
     if (fn === 'getResourceData') return res(MOCK_RES);
     if (fn === 'saveResource') return res({ id: 'RES-009', status: 'بانتظار المراجعة', edit: !!arg.id });
-    if (fn === 'setResourceHidden' || fn === 'reviewResource') return res({ ok: true });
+    if (fn === 'setResourceHidden' || fn === 'reviewResource' || fn === 'deleteResource') return res({ ok: true });
     MOCK_Q.pending = MOCK_Q.pending.filter(x => x.id !== arg.id);
     res({ ok: true });
   }, 400));
@@ -1507,8 +1508,10 @@ async function loadRes() {
   if (!support) RES_TAB = 'mine';
   $$('#res-tabs .tab').forEach(x => x.classList.toggle('active', x.dataset.tab === RES_TAB));
   const f = $('#res-dept-filter');
-  $('#res-filter').classList.toggle('hidden', RD.role !== 'view');
-  if (RD.role === 'view' && !f.options.length) {
+  // فلتر بالقسم: للرئاسة والدعم والتطوير (يشوفون موارد كل الأقسام)
+  const filtered = RD.role === 'view' || support;
+  $('#res-filter').classList.toggle('hidden', !filtered);
+  if (filtered && !f.options.length) {
     const add = (v, txt) => { const o = el('option', null, txt); o.value = v; f.appendChild(o); };
     add('', 'كل الأقسام');
     RD.depts.forEach(d => add(d, d));
@@ -1554,7 +1557,7 @@ function renderRes() {
     box.appendChild(add);
   }
   let items = RES_TAB === 'queue' ? RD.queue : RD.items;
-  const f = RD.role === 'view' ? $('#res-dept-filter').value : '';
+  const f = RD.role === 'view' || RD.role === 'support' ? $('#res-dept-filter').value : '';
   if (f) items = items.filter(it => f === '__shared' ? it.place === 'shared' : f === '__system' ? it.place === 'system' : it.place === 'department' && it.dept === f);
   if (!items.length) {
     box.appendChild(el('div', 'empty', RES_TAB === 'queue' ? 'ما فيه موارد تنتظر الاعتماد 🎉' : 'ما فيه موارد لسه.'));
@@ -1587,11 +1590,31 @@ function renderRes() {
         hb.type = 'button';
         hb.addEventListener('click', () => toggleResHidden(it, !hdn, hb));
         acts.append(e, hb);
+        if (RD.role === 'support') { // الحذف النهائي للدعم والتطوير بس
+          const db = el('button', 'linkbtn', 'حذف');
+          db.type = 'button';
+          db.style.color = 'var(--danger)';
+          db.addEventListener('click', () => deleteRes(it, db));
+          acts.appendChild(db);
+        }
         row.appendChild(acts);
       }
     }
     box.appendChild(row);
   });
+}
+async function deleteRes(it, btn) {
+  if (!confirm('تحذف "' + it.title + '" نهائيًا؟\nينحذف من الشيت والمنصة، وملفاته تروح لسلة المهملات.')) return;
+  btn.disabled = true;
+  try {
+    await api('deleteResource', { code: store.get('code', ''), id: it.id });
+    toast('انحذف ✓');
+    await loadRes();
+  } catch (err) {
+    if (authFailed(err)) return;
+    showAlert('#res-alert', (err && err.message) || 'صار خطأ، حاول مرة ثانية.');
+    btn.disabled = false;
+  }
 }
 async function toggleResHidden(it, hidden, btn) {
   btn.disabled = true;
